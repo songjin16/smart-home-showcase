@@ -148,6 +148,23 @@
         line-height: 1.7;
       }
 
+      .file-hero-points {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 18px;
+      }
+
+      .file-hero-points span {
+        padding: 8px 11px;
+        border: 1px solid rgba(255, 255, 255, 0.24);
+        border-radius: 8px;
+        color: rgba(255, 255, 255, 0.9);
+        background: rgba(255, 255, 255, 0.12);
+        font-size: 0.92rem;
+        font-weight: 800;
+      }
+
       .file-actions {
         display: flex;
         flex-wrap: wrap;
@@ -283,6 +300,64 @@
         font-weight: 700;
       }
 
+      .file-panorama {
+        position: relative;
+        min-height: 420px;
+        margin: 24px 0;
+        overflow: hidden;
+        border: 1px solid rgba(23, 32, 51, 0.08);
+        border-radius: 8px;
+        background: #101827;
+        box-shadow: 0 18px 38px rgba(31, 41, 55, 0.08);
+      }
+
+      .file-panorama-view {
+        width: 100%;
+        height: 420px;
+        cursor: grab;
+        background-image: var(--panorama-image);
+        background-size: auto 110%;
+        background-position: var(--panorama-x, 50%) center;
+        background-repeat: repeat-x;
+        transition: filter 180ms ease;
+        touch-action: none;
+      }
+
+      .file-panorama-view:active {
+        cursor: grabbing;
+      }
+
+      .file-panorama::after {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: linear-gradient(90deg, rgba(11, 18, 32, 0.26), transparent 22%, transparent 78%, rgba(11, 18, 32, 0.2));
+        content: "";
+      }
+
+      .file-panorama-caption {
+        position: absolute;
+        z-index: 2;
+        left: 16px;
+        bottom: 16px;
+        display: grid;
+        gap: 4px;
+        max-width: min(520px, calc(100% - 32px));
+        padding: 10px 12px;
+        border-radius: 8px;
+        color: #ffffff;
+        background: rgba(11, 18, 32, 0.72);
+      }
+
+      .file-panorama-caption strong {
+        font-size: 1rem;
+      }
+
+      .file-panorama-caption small {
+        color: rgba(255, 255, 255, 0.82);
+        line-height: 1.5;
+      }
+
       .file-room {
         position: relative;
         min-height: 640px;
@@ -293,6 +368,29 @@
           linear-gradient(180deg, var(--room-light, #fff2c2), transparent 52%),
           linear-gradient(135deg, #e9f1f3 0 44%, #d6c6a8 44% 100%);
         transition: background 260ms ease;
+      }
+
+      .file-room-caption {
+        position: absolute;
+        z-index: 2;
+        left: 18px;
+        top: 18px;
+        max-width: min(600px, calc(100% - 36px));
+        padding: 12px 14px;
+        border-radius: 8px;
+        color: #ffffff;
+        background: rgba(11, 18, 32, 0.72);
+      }
+
+      .file-room-caption strong,
+      .file-room-caption small {
+        display: block;
+      }
+
+      .file-room-caption small {
+        margin-top: 4px;
+        color: rgba(255, 255, 255, 0.82);
+        line-height: 1.5;
       }
 
       .file-room::before {
@@ -426,6 +524,15 @@
         margin-top: 6px;
       }
 
+      .file-scene-note {
+        margin-top: 12px;
+        padding-top: 12px;
+        border-top: 1px solid rgba(23, 32, 51, 0.08);
+        color: #5b6778;
+        font-size: 0.92rem;
+        line-height: 1.7;
+      }
+
       .file-modal {
         position: fixed;
         inset: 0;
@@ -480,6 +587,12 @@
         .file-room {
           min-height: 480px;
         }
+
+        .file-panorama,
+        .file-panorama-view {
+          min-height: 320px;
+          height: 320px;
+        }
       }
     </style>
   </head>
@@ -492,63 +605,75 @@
         const cases = [
           {
             id: "river-park",
-            name: "滨江悦府",
-            city: "杭州 滨江区",
+            name: "建业天筑",
+            city: "郑州 郑东新区",
             homeType: "三室两厅 / 128 平方米",
             cover:
               "https://images.unsplash.com/photo-1600210491892-03d54c0aaf87?auto=format&fit=crop&w=1200&q=80",
-            intro: "改善型家庭的全屋智能方案，重点解决灯光、窗帘、空调和安防的日常联动。",
+            panorama:
+              "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1800&q=82",
+            intro: "一家三口下班放学回到家，玄关灯先亮起，客厅空调提前调到舒服温度，晚饭后再一键切到观影氛围。",
             scenes: ["回家模式", "观影模式", "睡眠模式", "离家模式"],
-            highlights: ["进门自动亮灯并调节空调", "客厅观影一键关闭窗帘", "离家后统一关闭灯光和空调"],
+            highlights: ["进门不用摸黑找开关", "观影时灯光和窗帘一起配合", "出门后自动检查灯光、空调和门窗"],
+            benefits: ["每天少做重复操作", "客厅氛围更容易切换", "夜间起居更安心"],
             x: 31,
             y: 38,
           },
           {
             id: "lake-garden",
-            name: "湖畔花园",
-            city: "苏州 工业园区",
+            name: "正弘蓝堡湾",
+            city: "郑州 金水区",
             homeType: "四室两厅 / 156 平方米",
             cover:
               "https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&w=1200&q=80",
-            intro: "多房间家庭的分区智能控制方案，让老人和孩子都能用简单按钮控制常用场景。",
+            panorama:
+              "https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&w=1800&q=82",
+            intro: "四居室空间多、开关多，方案把客厅、书房和卧室分区管理，老人和孩子只需要按熟悉的场景按钮。",
             scenes: ["会客模式", "阅读模式", "睡眠模式", "安防模式"],
-            highlights: ["不同房间分区控制", "书房阅读灯光预设", "夜间门窗状态提醒"],
+            highlights: ["客厅会客灯光明亮不刺眼", "书房阅读亮度提前设好", "夜里门窗异常及时提醒"],
+            benefits: ["家人使用门槛低", "每个空间状态更清楚", "夜间提醒更安心"],
             x: 58,
             y: 31,
           },
           {
             id: "city-one",
-            name: "城市壹号",
-            city: "上海 浦东新区",
+            name: "亚星盛世星苑",
+            city: "郑州 二七区",
             homeType: "两室两厅 / 96 平方米",
             cover:
               "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
-            intro: "小户型智能家居方案，把常用设备集中到面板和手机控制，减少墙面开关数量。",
+            panorama:
+              "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1800&q=82",
+            intro: "小户型最怕墙面杂乱，这套方案把灯光、空调和插座集中到面板与手机里，日常操作更顺手。",
             scenes: ["回家模式", "用餐模式", "观影模式", "离家模式"],
-            highlights: ["小户型设备集中管理", "客餐厅灯光分组", "离家一键关闭全屋设备"],
+            highlights: ["客餐厅灯光分组更清楚", "做饭吃饭不用来回开关灯", "离家时一键关闭全屋设备"],
+            benefits: ["墙面更整洁", "日常控制更直接", "节能状态看得见"],
             x: 70,
             y: 55,
           },
           {
             id: "green-villa",
-            name: "绿城云墅",
-            city: "宁波 鄞州区",
+            name: "永威西郡",
+            city: "郑州 中原区",
             homeType: "叠墅 / 220 平方米",
             cover:
               "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=1200&q=80",
-            intro: "大户型展示方案，覆盖影音娱乐、全屋灯光、环境舒适度和庭院安防。",
+            panorama:
+              "https://images.unsplash.com/photo-1600607688960-e095ff83135c?auto=format&fit=crop&w=1800&q=82",
+            intro: "大户型房间多、动线长，方案把影音、露台、空调和安防串起来，家人不用在楼上楼下来回确认。",
             scenes: ["会客模式", "观影模式", "露台模式", "离家模式"],
-            highlights: ["影音室沉浸灯光", "露台照明定时开启", "多区域安防状态展示"],
+            highlights: ["影音室自动进入沉浸灯光", "露台照明按晚间习惯开启", "离家前统一检查多区域状态"],
+            benefits: ["大空间管理更省心", "娱乐体验更完整", "离家检查更高效"],
             x: 44,
             y: 66,
           },
         ];
 
         const scenes = [
-          { id: "home", name: "回家模式", light: "100%", curtain: "打开", ac: "26°C 制冷", security: "待机", color: "#fff2c2", power: 1, curtainValue: 0.22 },
-          { id: "movie", name: "观影模式", light: "32%", curtain: "关闭", ac: "25°C 静音", security: "待机", color: "#f7b267", power: 0.32, curtainValue: 0.9 },
-          { id: "sleep", name: "睡眠模式", light: "22%", curtain: "关闭", ac: "27°C 睡眠", security: "夜间提醒", color: "#f6ad55", power: 0.22, curtainValue: 0.95 },
-          { id: "away", name: "离家模式", light: "8%", curtain: "关闭", ac: "已关闭", security: "已开启", color: "#dbeafe", power: 0.08, curtainValue: 1 },
+          { id: "home", name: "回家模式", light: "100%", curtain: "打开", ac: "26°C 制冷", security: "待机", color: "#fff2c2", power: 1, curtainValue: 0.22, detail: "下班进门时玄关和客厅先亮起来，空调调到舒服温度，家人不用摸黑找开关。" },
+          { id: "movie", name: "观影模式", light: "32%", curtain: "关闭", ac: "25°C 静音", security: "待机", color: "#f7b267", power: 0.32, curtainValue: 0.9, detail: "晚饭后按一下，主灯变柔和、窗帘合上，电视区域更有氛围，也不会影响家人休息。" },
+          { id: "sleep", name: "睡眠模式", light: "22%", curtain: "关闭", ac: "27°C 睡眠", security: "夜间提醒", color: "#f6ad55", power: 0.22, curtainValue: 0.95, detail: "睡前灯光慢慢变暖变暗，窗帘合上保留隐私，空调进入睡眠温度，家里安静下来。" },
+          { id: "away", name: "离家模式", light: "8%", curtain: "关闭", ac: "已关闭", security: "已开启", color: "#dbeafe", power: 0.08, curtainValue: 1, detail: "出门时统一关闭灯光和空调，窗帘合上，安防开启，减少反复确认的担心。" },
         ];
 
         const products = [
@@ -562,6 +687,7 @@
 
         let activeCase = cases[0];
         let activeScene = scenes[0];
+        let panoramaDrag = null;
 
         function render() {
           document.getElementById("root").innerHTML = `
@@ -606,9 +732,14 @@
           document.getElementById("file-view").innerHTML = `
             <section class="file-hero">
               <div class="file-hero-content">
-                <p class="file-eyebrow">Smart Home Demo</p>
-                <h1>智装侠3D智能家居方案展示系统</h1>
-                <p>用 3D 和案例地图，直观看懂智能家居方案。这个本地预览版可以直接通过文件打开。</p>
+                <p class="file-eyebrow">智装侠智能生活方案</p>
+                <h1>智装侠 3D 智能家居方案展示</h1>
+                <p>把回家、观影、睡前和离家这些每天都会发生的小事，放进可看的空间和真实案例里。这个本地预览版可以直接通过文件打开。</p>
+                <div class="file-hero-points">
+                  <span>进门不摸黑</span>
+                  <span>观影有氛围</span>
+                  <span>离家少担心</span>
+                </div>
                 <div class="file-actions">
                   <button class="file-primary" data-home-cases>查看案例地图</button>
                   <button class="file-ghost" data-home-showroom>进入 3D/VR 方案</button>
@@ -625,7 +756,7 @@
             <section class="file-page">
               <p class="file-eyebrow">案例地图</p>
               <h1>已落地小区案例</h1>
-              <p>示意地图展示案例分布。点击小区点位或右侧列表，可以查看案例介绍、智能场景和方案亮点。</p>
+              <p>先看做过哪些小区，再看每套房子怎么把灯光、窗帘、空调和安防变成日常好用的生活场景。</p>
               <div class="file-map-layout">
                 <div class="file-map">
                   ${cases
@@ -676,13 +807,20 @@
               <p class="file-eyebrow" style="margin-top:24px">${activeCase.city}</p>
               <h1>${activeCase.name}</h1>
               <p>${activeCase.intro}</p>
+              <div class="file-panorama" style="--panorama-image:url('${activeCase.panorama}')">
+                <div class="file-panorama-view" data-panorama-view role="img" aria-label="${activeCase.name}全景图浏览"></div>
+                <div class="file-panorama-caption">
+                  <strong>全景图浏览</strong>
+                  <small>按住画面左右拖动，像站在客厅里一样查看空间。客户可以先感受整体氛围，再进入 3D 场景看设备联动。</small>
+                </div>
+              </div>
               <div class="file-card">
                 <img src="${activeCase.cover}" alt="${activeCase.name}案例图片" style="height:360px">
                 <div class="file-card-body">
                   <h2>案例详情</h2>
                   <p><strong>户型面积：</strong>${activeCase.homeType}</p>
                   <p><strong>智能设备：</strong>智能灯、智能窗帘、智能面板、空调控制器、门窗传感器</p>
-                  <p><strong>客户收益：</strong>更方便、更节能、更有氛围，销售讲解时也更直观。</p>
+                  <p><strong>客户收益：</strong>${activeCase.benefits.join("、")}。</p>
                   <div class="file-tags">${activeCase.highlights.map((item) => `<span>${item}</span>`).join("")}</div>
                   <button class="file-primary" data-go-showroom>进入 3D 方案</button>
                 </div>
@@ -691,16 +829,50 @@
           `;
           document.querySelector("[data-back]").addEventListener("click", showCases);
           document.querySelector("[data-go-showroom]").addEventListener("click", showShowroom);
+          bindPanoramaDrag();
+        }
+
+        function bindPanoramaDrag() {
+          const view = document.querySelector("[data-panorama-view]");
+          if (!view) return;
+
+          let position = 50;
+
+          view.addEventListener("pointerdown", (event) => {
+            panoramaDrag = { startX: event.clientX, startPosition: position };
+            view.setPointerCapture(event.pointerId);
+          });
+
+          view.addEventListener("pointermove", (event) => {
+            if (!panoramaDrag) return;
+            const movement = (event.clientX - panoramaDrag.startX) * 0.08;
+            position = ((panoramaDrag.startPosition - movement) % 100 + 100) % 100;
+            view.style.setProperty("--panorama-x", `${position}%`);
+          });
+
+          const endDrag = (event) => {
+            panoramaDrag = null;
+            if (view.hasPointerCapture(event.pointerId)) {
+              view.releasePointerCapture(event.pointerId);
+            }
+          };
+
+          view.addEventListener("pointerup", endDrag);
+          view.addEventListener("pointercancel", endDrag);
         }
 
         function showShowroom() {
           document.getElementById("file-view").innerHTML = `
             <section class="file-page">
               <p class="file-eyebrow">3D/VR 智能家居方案</p>
-              <h1>客厅样板间</h1>
-              <p>这是文件预览版的轻量 3D 视觉样板间。点击场景按钮查看灯光、窗帘、空调和安防变化；点击圆形点位查看产品介绍。</p>
+              <h1>客厅生活场景</h1>
+              <p>切换不同模式，看同一个客厅怎样从进门明亮、晚饭后放松，过渡到睡前温暖和离家看护。</p>
               <div class="file-showroom">
                 <div class="file-room" style="--room-light:${activeScene.color};--lamp-power:${activeScene.power};--curtain:${activeScene.curtainValue}">
+                  <div class="file-room-caption">
+                    <strong>${activeScene.name}</strong>
+                    <small>${activeScene.detail}</small>
+                  </div>
                   <div class="file-window"></div>
                   <div class="file-curtain"></div>
                   <div class="file-tv"></div>
@@ -718,6 +890,7 @@
                 </div>
                 <aside class="file-panel">
                   <h2>当前场景：${activeScene.name}</h2>
+                  <p class="file-scene-note">${activeScene.detail}</p>
                   <div class="file-scene-list">
                     ${scenes
                       .map(
