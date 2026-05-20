@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   ArrowLeft,
   BedDouble,
@@ -17,8 +17,11 @@ import {
 } from 'lucide-react';
 import { cases, productPoints, scenes } from './data/demoData.js';
 import CaseAmap from './components/CaseAmap.jsx';
+import PhotoUploadPanel from './components/PhotoUploadPanel.jsx';
 import ThreeShowroom from './components/ThreeShowroom.jsx';
 import zhizhuangxiaLogo from './assets/zhizhuangxia-logo.png';
+
+const UPLOADED_PHOTOS_KEY = 'zhizhuangxia_uploaded_photos';
 
 const sceneIcons = {
   home: Home,
@@ -43,6 +46,81 @@ function useRoute() {
   }, []);
 
   return { path, navigate };
+}
+
+function readUploadedPhotos() {
+  try {
+    const saved = JSON.parse(window.localStorage.getItem(UPLOADED_PHOTOS_KEY) ?? '[]');
+    return Array.isArray(saved) ? saved : [];
+  } catch {
+    return [];
+  }
+}
+
+function useUploadedPhotos() {
+  const [photos, setPhotos] = useState(readUploadedPhotos);
+
+  const savePhotos = (nextPhotos) => {
+    setPhotos(nextPhotos);
+    window.localStorage.setItem(UPLOADED_PHOTOS_KEY, JSON.stringify(nextPhotos));
+  };
+
+  const addPhoto = (draft) => {
+    const nextPhoto = {
+      id: `photo-${Date.now()}`,
+      name: draft.name,
+      city: draft.city,
+      position: draft.position,
+      imageUrl: draft.imageUrl,
+      fileName: draft.fileName,
+      detectedText: draft.detectedText,
+      hasGps: draft.hasGps,
+      createdAt: new Date().toISOString(),
+    };
+    savePhotos([...photos, nextPhoto]);
+    return nextPhoto;
+  };
+
+  return { photos, addPhoto };
+}
+
+function buildCasesWithPhotos(baseCases, uploadedPhotos) {
+  const groupedPhotos = uploadedPhotos.reduce((groups, photo) => {
+    const key = photo.name;
+    return { ...groups, [key]: [...(groups[key] ?? []), photo] };
+  }, {});
+
+  const baseNames = new Set(baseCases.map((item) => item.name));
+  const enrichedCases = baseCases.map((item) => ({
+    ...item,
+    photos: groupedPhotos[item.name] ?? [],
+  }));
+
+  const customCases = Object.entries(groupedPhotos)
+    .filter(([name]) => !baseNames.has(name))
+    .map(([name, photos]) => {
+      const latestPhoto = photos[photos.length - 1];
+      return {
+        id: `uploaded-${name}`,
+        name,
+        city: latestPhoto.city,
+        homeType: '项目照片归档',
+        area: `${photos.length} 张照片`,
+        rooms: '现场照片',
+        position: latestPhoto.position,
+        cover: latestPhoto.imageUrl,
+        images: photos.map((photo) => photo.imageUrl),
+        intro: '由上传的水印照片自动生成，可点击查看这个小区关联的现场图片。',
+        scenes: ['照片归档'],
+        highlights: ['上传照片自动归类', latestPhoto.hasGps ? '已读取照片位置' : '位置待人工确认'],
+        benefits: ['减少手工整理', '地图查找更直观'],
+        devices: [],
+        photos,
+        isUploaded: true,
+      };
+    });
+
+  return [...enrichedCases, ...customCases];
 }
 
 function Shell({ children, navigate }) {
@@ -115,8 +193,23 @@ function HomePage({ navigate }) {
 }
 
 function CaseMapPage({ navigate }) {
-  const [activeId, setActiveId] = useState(cases[0].id);
-  const activeCase = cases.find((item) => item.id === activeId) ?? cases[0];
+  const { photos, addPhoto } = useUploadedPhotos();
+  const allCases = useMemo(() => buildCasesWithPhotos(cases, photos), [photos]);
+  const [activeId, setActiveId] = useState(allCases[0].id);
+  const activeCase = allCases.find((item) => item.id === activeId) ?? allCases[0];
+
+  const handleSavePhoto = (draft) => {
+    const name = draft.name.trim();
+    const existingCase = allCases.find((item) => item.name === name);
+    addPhoto(draft);
+    setActiveId(existingCase?.id ?? `uploaded-${name}`);
+  };
+
+  useEffect(() => {
+    if (!allCases.some((item) => item.id === activeId)) {
+      setActiveId(allCases[0].id);
+    }
+  }, [activeId, allCases]);
 
   return (
     <main className="page">
@@ -127,11 +220,11 @@ function CaseMapPage({ navigate }) {
       </div>
 
       <section className="case-map-layout">
-        <CaseAmap cases={cases} activeId={activeId} onSelectCase={setActiveId} />
+        <CaseAmap cases={allCases} activeId={activeId} onSelectCase={setActiveId} />
 
         <aside className="case-side">
           <div className="case-list">
-            {cases.map((item) => (
+            {allCases.map((item) => (
               <button
                 key={item.id}
                 className={item.id === activeCase.id ? 'selected' : ''}
@@ -159,14 +252,29 @@ function CaseMapPage({ navigate }) {
                   <li key={item}>{item}</li>
                 ))}
               </ul>
-              <button className="primary-action full" onClick={() => navigate(`/cases/${activeCase.id}`)}>
-                查看详情
-                <ChevronRight size={18} />
-              </button>
+              {activeCase.photos?.length ? (
+                <div className="photo-gallery">
+                  {activeCase.photos.map((photo) => (
+                    <img key={photo.id} src={photo.imageUrl} alt={`${activeCase.name}上传照片`} />
+                  ))}
+                </div>
+              ) : null}
+              {!activeCase.isUploaded ? (
+                <button className="primary-action full" onClick={() => navigate(`/cases/${activeCase.id}`)}>
+                  查看详情
+                  <ChevronRight size={18} />
+                </button>
+              ) : (
+                <button className="secondary-action full" type="button">
+                  已归档 {activeCase.photos.length} 张照片
+                </button>
+              )}
             </div>
           </article>
         </aside>
       </section>
+
+      <PhotoUploadPanel cases={allCases} uploadCount={photos.length} onSave={handleSavePhoto} />
     </main>
   );
 }

@@ -1,3 +1,24 @@
+import cityOneFloorplan from '../assets/generated-home-showcase/city-one-floorplan.png';
+import cityOneLightLuxury from '../assets/generated-home-showcase/city-one-light-luxury.png';
+import cityOneModern from '../assets/generated-home-showcase/city-one-modern.png';
+import cityOneNaturalWood from '../assets/generated-home-showcase/city-one-natural-wood.png';
+import cityOnePanorama from '../assets/generated-home-showcase/city-one-panorama.png';
+import greenVillaFloorplan from '../assets/generated-home-showcase/green-villa-floorplan.png';
+import greenVillaLightLuxury from '../assets/generated-home-showcase/green-villa-light-luxury.png';
+import greenVillaModern from '../assets/generated-home-showcase/green-villa-modern.png';
+import greenVillaNaturalWood from '../assets/generated-home-showcase/green-villa-natural-wood.png';
+import greenVillaPanorama from '../assets/generated-home-showcase/green-villa-panorama.png';
+import lakeGardenFloorplan from '../assets/generated-home-showcase/lake-garden-floorplan.png';
+import lakeGardenLightLuxury from '../assets/generated-home-showcase/lake-garden-light-luxury.png';
+import lakeGardenModern from '../assets/generated-home-showcase/lake-garden-modern.png';
+import lakeGardenNaturalWood from '../assets/generated-home-showcase/lake-garden-natural-wood.png';
+import lakeGardenPanorama from '../assets/generated-home-showcase/lake-garden-panorama.png';
+import riverParkFloorplan from '../assets/generated-home-showcase/river-park-floorplan.png';
+import riverParkLightLuxury from '../assets/generated-home-showcase/river-park-light-luxury.png';
+import riverParkModern from '../assets/generated-home-showcase/river-park-modern.png';
+import riverParkNaturalWood from '../assets/generated-home-showcase/river-park-natural-wood.png';
+import riverParkPanorama from '../assets/generated-home-showcase/river-park-panorama.png';
+
 export const cases = [
   {
     id: 'river-park',
@@ -8,13 +29,8 @@ export const cases = [
     rooms: '客厅、主卧、儿童房、餐厅',
     position: [113.763522, 34.757588],
     mapPosition: { x: 31, y: 38 },
-    cover:
-      'https://images.unsplash.com/photo-1600210491892-03d54c0aaf87?auto=format&fit=crop&w=1200&q=80',
-    images: [
-      'https://images.unsplash.com/photo-1600210491892-03d54c0aaf87?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80',
-    ],
+    cover: riverParkModern,
+    images: [riverParkFloorplan, riverParkPanorama, riverParkLightLuxury, riverParkNaturalWood],
     intro: '面向改善型家庭的全屋智能方案，重点解决灯光、窗帘、空调和安防的日常联动。',
     scenes: ['回家模式', '观影模式', '睡眠模式', '离家模式'],
     highlights: ['进门自动亮灯并调节空调', '客厅观影一键关闭窗帘', '离家后统一关闭灯光和空调'],
@@ -30,13 +46,8 @@ export const cases = [
     rooms: '客厅、餐厅、书房、主卧',
     position: [113.670829, 34.800174],
     mapPosition: { x: 58, y: 31 },
-    cover:
-      'https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&w=1200&q=80',
-    images: [
-      'https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1200&q=80',
-    ],
+    cover: lakeGardenModern,
+    images: [lakeGardenFloorplan, lakeGardenPanorama, lakeGardenLightLuxury, lakeGardenNaturalWood],
     intro: '适合多房间家庭的分区智能控制方案，让老人和孩子都能用简单按钮控制常用场景。',
     scenes: ['会客模式', '阅读模式', '睡眠模式', '安防模式'],
     highlights: ['不同房间分区控制', '书房阅读灯光预设', '夜间门窗状态提醒'],
@@ -52,13 +63,8 @@ export const cases = [
     rooms: '客厅、主卧、次卧、开放厨房',
     position: [113.625419, 34.717086],
     mapPosition: { x: 70, y: 55 },
-    cover:
-      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80',
-    images: [
-      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1600566753151-384129cf4e3e?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1600607687644-c7171b42498b?auto=format&fit=crop&w=1200&q=80',
-    ],
+    cover: cityOneModern,
+    images: [cityOneFloorplan, cityOnePanorama, cityOneLightLuxury, cityOneNaturalWood],
     intro: '小户型智能家居方案，重点把常用设备集中到面板和手机控制，减少墙面开关数量。',
     scenes: ['回家模式', '用餐模式', '观影模式', '离家模式'],
     highlights: ['小户型设备集中管理', '客餐厅灯光分组', '离家一键关闭全屋设备'],
@@ -74,13 +80,8 @@ export const cases = [
     rooms: '客厅、影音室、主卧、露台',
     position: [113.535852, 34.747015],
     mapPosition: { x: 44, y: 66 },
-    cover:
-      'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=1200&q=80',
-    images: [
-      'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1600607688066-890987f18a86?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1600566752734-27f1fddc5c2a?auto=format&fit=crop&w=1200&q=80',
-    ],
+    cover: greenVillaModern,
+    images: [greenVillaFloorplan, greenVillaPanorama, greenVillaLightLuxury, greenVillaNaturalWood],
     intro: '大户型展示方案，覆盖影音娱乐、全屋灯光、环境舒适度和庭院安防。',
     scenes: ['会客模式', '观影模式', '露台模式', '离家模式'],
     highlights: ['影音室沉浸灯光', '露台照明定时开启', '多区域安防状态展示'],
