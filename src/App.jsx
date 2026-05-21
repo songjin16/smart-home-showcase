@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   ArrowLeft,
-  ChevronRight,
+  ArrowRight,
   Home,
   LampCeiling,
   MapPin,
@@ -130,11 +130,11 @@ function Shell({ children, navigate }) {
           <span className="brand-mark image-logo">
             <img src={zhizhuangxiaLogo} alt="智装侠" />
           </span>
-          <span>智能家居方案展示系统</span>
+          <span>智能家居案例展示系统</span>
         </button>
         <nav className="nav-links" aria-label="主导航">
           <button onClick={() => navigate('/cases')}>案例地图</button>
-          <button onClick={() => navigate(`/showroom/${cases[0].id}`)}>3D/VR 方案</button>
+          <button onClick={() => navigate(`/showroom/${cases[0].id}`)}>案例演示</button>
         </nav>
       </header>
       {children}
@@ -153,46 +153,45 @@ function HomePage({ navigate }) {
           />
         </div>
         <div className="hero-overlay" />
-        <div className="hero-content">
-          <p className="eyebrow">智装侠智能生活方案</p>
-          <h1>智装侠 3D 智能家居方案展示</h1>
-          <p className="hero-copy">
-            把回家、观影、睡前和离家这些每天都会发生的小事，放进可看的 3D 空间和真实案例里，让客户一眼明白智能家居怎么照顾一家人的生活。
-          </p>
-          <div className="hero-points" aria-label="方案亮点">
-            <span>进门不摸黑</span>
-            <span>观影有氛围</span>
-            <span>离家少担心</span>
+        <div className="hero-layout">
+          <div className="hero-content">
+            <p className="eyebrow">智装侠智能生活案例</p>
+            <h1>智装侠智能家居案例展示</h1>
+            <p className="hero-copy">
+              从郑州真实落地案例，看回家、观影、睡前和离家时，灯光、窗帘、网络和音响怎样配合一家人的生活。
+            </p>
+            <div className="hero-points" aria-label="案例亮点">
+              <span>进门不摸黑</span>
+              <span>观影有氛围</span>
+              <span>离家少担心</span>
+            </div>
+            <div className="hero-actions">
+              <button className="primary-action" onClick={() => navigate('/cases')}>
+                <MapPin size={20} />
+                查看案例地图
+              </button>
+              <button className="secondary-action" onClick={() => navigate(`/showroom/${cases[0].id}`)}>
+                <Play size={20} />
+                查看案例演示
+              </button>
+            </div>
           </div>
-          <div className="hero-actions">
-            <button className="primary-action" onClick={() => navigate('/cases')}>
-              <MapPin size={20} />
-              查看案例地图
-            </button>
-            <button className="secondary-action" onClick={() => navigate(`/showroom/${cases[0].id}`)}>
-              <Play size={20} />
-              进入 3D/VR 方案
-            </button>
-          </div>
-        </div>
-      </section>
 
-      <section className="quick-grid">
-        <article>
-          <MapPin />
-          <h2>案例看得见</h2>
-          <p>地图上直接看到做过的小区，再点开了解户型、场景和实际解决的问题。</p>
-        </article>
-        <article>
-          <Sofa />
-          <h2>场景能想象</h2>
-          <p>用客厅样板间演示灯光、窗帘、空调和安防怎么一起工作。</p>
-        </article>
-        <article>
-          <LampCeiling />
-          <h2>讲解更省力</h2>
-          <p>每个模式都对应真实生活时刻，客户不需要懂设备，也能理解价值。</p>
-        </article>
+        </div>
+        <aside className="hero-proof" aria-label="郑州落地服务经验">
+          <strong>郑州落地服务始于 2017</strong>
+          <span>小米米家 / 苹果 HomeKit</span>
+          <div className="proof-tags">
+            <b>绿米</b>
+            <b>易来</b>
+            <b>领普</b>
+            <b>皓逸</b>
+            <b>锐捷网络覆盖</b>
+            <b>KEF</b>
+            <b>蜗牛</b>
+            <b>Sonos</b>
+          </div>
+        </aside>
       </section>
     </main>
   );
@@ -271,7 +270,7 @@ function CaseMapPage({ navigate }) {
               {!activeCase.isUploaded ? (
                 <button className="primary-action full" onClick={() => navigate(`/cases/${activeCase.id}`)}>
                   查看详情
-                  <ChevronRight size={18} />
+                  <ArrowRight size={18} />
                 </button>
               ) : (
                 <button className="secondary-action full" type="button">
@@ -329,15 +328,15 @@ function CaseDetailPage({ caseItem, navigate }) {
           <p>{caseItem.intro}</p>
           <div className="detail-actions">
             <button className="primary-action" onClick={() => navigate(`/showroom/${caseItem.id}`)}>
-              进入 3D 方案
-              <ChevronRight size={18} />
+              查看案例演示
+              <ArrowRight size={18} />
             </button>
             <button className="secondary-action" onClick={() => navigate('/cases')}>
               查看更多案例
             </button>
           </div>
         </div>
-        <VRPanoramaViewer src={caseItem.images[1] ?? caseItem.cover} alt={`${caseItem.name}VR全景看房`} />
+        <PanoramaViewer src={caseItem.images[1] ?? caseItem.cover} alt={`${caseItem.name}全景看房`} />
       </section>
 
       <section className="stats-grid">
@@ -393,7 +392,7 @@ function CaseDetailPage({ caseItem, navigate }) {
   );
 }
 
-function VRPanoramaViewer({ src, alt }) {
+function PanoramaViewer({ src, alt }) {
   const mountRef = useRef(null);
   const dragRef = useRef({ active: false, lastX: 0, lastY: 0, lon: 0, lat: 0 });
   const viewRef = useRef({ active: false, lastX: 0, lastY: 0, lon: 0, lat: 0 });
@@ -487,10 +486,10 @@ function VRPanoramaViewer({ src, alt }) {
   };
 
   return (
-    <figure className="vr-panorama-hero">
+    <figure className="panorama-hero">
       <div
         ref={mountRef}
-        className="vr-panorama-canvas"
+        className="panorama-canvas"
         role="img"
         aria-label={alt}
         onPointerDown={handlePointerDown}
@@ -499,7 +498,7 @@ function VRPanoramaViewer({ src, alt }) {
         onPointerCancel={handlePointerEnd}
       />
       <figcaption>
-        <span>VR 全景</span>
+        <span>全景浏览</span>
         <small>拖动视角看房</small>
       </figcaption>
     </figure>
@@ -520,7 +519,7 @@ function ShowroomPage({ caseItem, navigate }) {
   if (!caseItem) {
     return (
       <main className="page centered-page">
-        <h1>没有找到这个方案</h1>
+        <h1>没有找到这个案例</h1>
         <button className="secondary-action" onClick={() => navigate('/cases')}>
           返回案例地图
         </button>
@@ -533,12 +532,12 @@ function ShowroomPage({ caseItem, navigate }) {
       <section className="showroom-header">
         <div>
           <p className="eyebrow">{caseItem.city}</p>
-          <h1>{caseItem.name}生活场景方案</h1>
+          <h1>{caseItem.name}生活场景案例</h1>
           <p>切换不同模式，看同一个客厅怎样从清晨明亮、晚饭后放松，过渡到睡前温暖和离家看护。点击产品点位，可以了解每个设备在家里的作用。</p>
         </div>
       </section>
 
-      <section className="showroom-case-switcher" aria-label="方案列表">
+      <section className="showroom-case-switcher" aria-label="案例列表">
         {cases.map((item) => (
           <button
             key={item.id}

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>3D智能家居方案展示系统</title>
+    <title>智能家居案例展示系统</title>
     <style>
       .file-demo {
         min-height: 100vh;
@@ -99,11 +99,9 @@
 
       .file-hero {
         position: relative;
-        display: grid;
-        min-height: 620px;
-        place-items: center start;
+        min-height: calc(100vh - 70px);
         overflow: hidden;
-        padding: 72px clamp(20px, 7vw, 96px);
+        padding: clamp(34px, 8vh, 72px) clamp(20px, 7vw, 96px);
         color: #ffffff;
       }
 
@@ -117,9 +115,15 @@
             center/cover;
       }
 
-      .file-hero-content {
+      .file-hero-layout {
         position: relative;
-        max-width: 720px;
+        z-index: 1;
+        width: min(1180px, 100%);
+      }
+
+      .file-hero-content {
+        max-width: 760px;
+        min-width: 0;
       }
 
       .file-eyebrow {
@@ -141,11 +145,17 @@
         letter-spacing: 0;
       }
 
+      .file-hero h1 {
+        max-width: 100%;
+        font-size: clamp(2.2rem, 5vw, 4.4rem);
+        white-space: nowrap;
+      }
+
       .file-hero p {
-        max-width: 580px;
+        max-width: 640px;
         color: rgba(255, 255, 255, 0.88);
         font-size: 1.16rem;
-        line-height: 1.7;
+        line-height: 1.55;
       }
 
       .file-hero-points {
@@ -169,7 +179,7 @@
         display: flex;
         flex-wrap: wrap;
         gap: 12px;
-        margin-top: 26px;
+        margin-top: 20px;
       }
 
       .file-page {
@@ -182,6 +192,48 @@
         max-width: 760px;
         color: #5b6778;
         line-height: 1.7;
+      }
+
+      .file-proof {
+        position: absolute;
+        z-index: 1;
+        right: clamp(20px, 7vw, 96px);
+        bottom: clamp(28px, 5vh, 54px);
+        left: clamp(20px, 7vw, 96px);
+        display: grid;
+        grid-auto-flow: column;
+        justify-content: start;
+        align-items: center;
+        gap: 8px 12px;
+        max-width: min(900px, calc(100% - 40px));
+        padding: 10px 12px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 8px;
+        background: rgba(11, 18, 32, 0.34);
+        backdrop-filter: blur(10px);
+      }
+
+      .file-proof strong {
+        font-size: 0.96rem;
+      }
+
+      .file-proof > span {
+        color: rgba(255, 255, 255, 0.76);
+        font-size: 0.9rem;
+      }
+
+      .file-proof-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      .file-proof-tags b {
+        padding: 4px 7px;
+        border-radius: 8px;
+        color: rgba(255, 255, 255, 0.86);
+        background: rgba(255, 255, 255, 0.1);
+        font-size: 0.8rem;
       }
 
       .file-map-layout,
@@ -588,6 +640,24 @@
           min-height: 480px;
         }
 
+        .file-hero {
+          min-height: calc(100vh - 118px);
+          padding: 44px 20px;
+        }
+
+        .file-hero h1 {
+          font-size: clamp(1.45rem, 7vw, 2.65rem);
+        }
+
+        .file-proof {
+          position: static;
+          display: flex;
+          flex-wrap: wrap;
+          max-width: none;
+          margin-top: 20px;
+          padding: 10px;
+        }
+
         .file-panorama,
         .file-panorama-view {
           min-height: 320px;
@@ -609,7 +679,7 @@
             city: "郑州 郑东新区",
             homeType: "三室两厅 / 128 平方米",
             cover:
-              "https://images.unsplash.com/photo-1600210491892-03d54c0aaf87?auto=format&fit=crop&w=1200&q=80",
+              "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80",
             panorama:
               "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1800&q=82",
             intro: "一家三口下班放学回到家，玄关灯先亮起，客厅空调提前调到舒服温度，晚饭后再一键切到观影氛围。",
@@ -692,10 +762,10 @@
         function render() {
           document.getElementById("root").innerHTML = `
             <header class="file-topbar">
-              <button class="file-brand" data-view="home"><span><img src="./src/assets/zhizhuangxia-logo.png" alt="智装侠"></span><span>智能家居方案展示系统</span></button>
+              <button class="file-brand" data-view="home"><span><img src="./src/assets/zhizhuangxia-logo.png" alt="智装侠"></span><span>智能家居案例展示系统</span></button>
               <nav class="file-nav">
                 <button data-view="cases">案例地图</button>
-                <button data-view="showroom">3D/VR 方案</button>
+                <button data-view="showroom">案例演示</button>
               </nav>
             </header>
             <main id="file-view"></main>
@@ -731,20 +801,30 @@
         function showHome() {
           document.getElementById("file-view").innerHTML = `
             <section class="file-hero">
-              <div class="file-hero-content">
-                <p class="file-eyebrow">智装侠智能生活方案</p>
-                <h1>智装侠 3D 智能家居方案展示</h1>
-                <p>把回家、观影、睡前和离家这些每天都会发生的小事，放进可看的空间和真实案例里。这个本地预览版可以直接通过文件打开。</p>
-                <div class="file-hero-points">
-                  <span>进门不摸黑</span>
-                  <span>观影有氛围</span>
-                  <span>离家少担心</span>
-                </div>
-                <div class="file-actions">
-                  <button class="file-primary" data-home-cases>查看案例地图</button>
-                  <button class="file-ghost" data-home-showroom>进入 3D/VR 方案</button>
+              <div class="file-hero-layout">
+                <div class="file-hero-content">
+                  <p class="file-eyebrow">智装侠智能生活案例</p>
+                  <h1>智装侠智能家居案例展示</h1>
+                  <p>从郑州真实落地案例，看回家、观影、睡前和离家时，灯光、窗帘、网络和音响怎样配合一家人的生活。</p>
+                  <div class="file-hero-points">
+                    <span>进门不摸黑</span>
+                    <span>观影有氛围</span>
+                    <span>离家少担心</span>
+                  </div>
+                  <div class="file-actions">
+                    <button class="file-primary" data-home-cases>查看案例地图</button>
+                    <button class="file-ghost" data-home-showroom>查看案例演示</button>
+                  </div>
                 </div>
               </div>
+              <aside class="file-proof">
+                <strong>郑州落地服务始于 2017</strong>
+                <span>小米米家 / 苹果 HomeKit</span>
+                <div class="file-proof-tags">
+                  <b>绿米</b><b>易来</b><b>领普</b><b>皓逸</b>
+                  <b>锐捷网络覆盖</b><b>KEF</b><b>蜗牛</b><b>Sonos</b>
+                </div>
+              </aside>
             </section>
           `;
           document.querySelector("[data-home-cases]").addEventListener("click", showCases);
@@ -811,7 +891,7 @@
                 <div class="file-panorama-view" data-panorama-view role="img" aria-label="${activeCase.name}全景图浏览"></div>
                 <div class="file-panorama-caption">
                   <strong>全景图浏览</strong>
-                  <small>按住画面左右拖动，像站在客厅里一样查看空间。客户可以先感受整体氛围，再进入 3D 场景看设备联动。</small>
+                  <small>按住画面左右拖动，像站在客厅里一样查看空间。客户可以先感受整体氛围，再进入场景演示看设备联动。</small>
                 </div>
               </div>
               <div class="file-card">
@@ -822,7 +902,7 @@
                   <p><strong>智能设备：</strong>智能灯、智能窗帘、智能面板、空调控制器、门窗传感器</p>
                   <p><strong>客户收益：</strong>${activeCase.benefits.join("、")}。</p>
                   <div class="file-tags">${activeCase.highlights.map((item) => `<span>${item}</span>`).join("")}</div>
-                  <button class="file-primary" data-go-showroom>进入 3D 方案</button>
+                  <button class="file-primary" data-go-showroom>查看案例演示</button>
                 </div>
               </div>
             </section>
@@ -864,7 +944,7 @@
         function showShowroom() {
           document.getElementById("file-view").innerHTML = `
             <section class="file-page">
-              <p class="file-eyebrow">3D/VR 智能家居方案</p>
+              <p class="file-eyebrow">智能家居案例演示</p>
               <h1>客厅生活场景</h1>
               <p>切换不同模式，看同一个客厅怎样从进门明亮、晚饭后放松，过渡到睡前温暖和离家看护。</p>
               <div class="file-showroom">

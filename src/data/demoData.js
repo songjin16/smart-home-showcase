@@ -220,7 +220,7 @@ export const productPoints = [
     sceneUse: '休闲和温馨模式下可控制音乐与灯光氛围。',
     hotspot: { x: 44, y: 62 },
     image:
-      'https://images.unsplash.com/photo-1589003077984-894e133dabab?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1543512214-318c7553f230?auto=format&fit=crop&w=800&q=80',
   },
   {
     id: 'ac',

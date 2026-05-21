@@ -2,8 +2,8 @@
 
 ## Project
 
-- Name: 3d-home
-- Description: A web-based 3D smart home solution showcase system for everyday smart users.
+- Name: smart-home-showcase
+- Description: A web-based smart home case showcase system for everyday smart users.
 
 ## Communication Rules
 
@@ -25,4 +25,4 @@
 - Prefer simple, maintainable implementation choices.
 - Match the existing project style once the project has code.
 - Build user-facing features with ordinary smart home users in mind: clear visuals, easy controls, and understandable labels.
-- For 3D or visual pages, verify that the page renders correctly before reporting completion whenever possible.
+- For visual pages, verify that the page renders correctly before reporting completion whenever possible.
