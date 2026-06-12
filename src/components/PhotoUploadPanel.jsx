@@ -1,6 +1,13 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ImagePlus } from 'lucide-react';
-import { fileToDataUrl, guessCommunityName, readGpsPosition, tryDetectWatermarkText } from '../utils/photoLocation.js';
+import {
+  fileToDataUrl,
+  guessCommunityName,
+  readGpsPosition,
+  terminateWatermarkTextDetection,
+  tryDetectWatermarkText,
+} from '../utils/photoLocation.js';
+import { lookupAdministrativeArea } from '../utils/amapAddress.js';
 
 const ZHENGZHOU_CENTER = [113.625368, 34.746599];
 
@@ -14,6 +21,13 @@ export default function PhotoUploadPanel({ cases, uploadCount, onSave }) {
   const [status, setStatus] = useState('idle');
   const [message, setMessage] = useState('');
 
+  useEffect(
+    () => () => {
+      terminateWatermarkTextDetection();
+    },
+    [],
+  );
+
   const handleFileChange = async (event) => {
     const file = event.target.files?.[0];
     if (!file) return;
@@ -25,16 +39,16 @@ export default function PhotoUploadPanel({ cases, uploadCount, onSave }) {
       const arrayBuffer = await file.arrayBuffer();
       const position = readGpsPosition(arrayBuffer);
       const imageUrl = await fileToDataUrl(file);
+      const administrativeAreaPromise = position ? lookupAdministrativeArea(position) : Promise.resolve(null);
 
       let detectedText = '';
       let ocrSupported = false;
-      try {
-        const ocrResult = await tryDetectWatermarkText(file);
-        detectedText = ocrResult.text;
-        ocrSupported = ocrResult.supported;
-      } catch {
-        detectedText = '';
-      }
+      setStatus('recognizing');
+      setMessage('正在识别照片文字，首次识别可能需要多等一会。');
+      const ocrResult = await tryDetectWatermarkText(file);
+      const administrativeArea = await administrativeAreaPromise;
+      detectedText = ocrResult.text;
+      ocrSupported = ocrResult.supported;
 
       const guessedName = guessCommunityName(detectedText, cases);
       const fallbackPosition = makeFallbackPosition(uploadCount + 1);
@@ -45,16 +59,22 @@ export default function PhotoUploadPanel({ cases, uploadCount, onSave }) {
         detectedText,
         ocrSupported,
         name: guessedName,
-        city: '郑州 待确认',
-        position: position ?? fallbackPosition,
+        city: administrativeArea?.city ?? '郑州 待确认',
+        position: administrativeArea?.position ?? position ?? fallbackPosition,
         hasGps: Boolean(position),
       });
       setStatus('ready');
-      setMessage(
-        position
-          ? '已读取到照片位置信息，请确认小区名称后保存。'
-          : '这张照片没有读到 GPS，已临时放在郑州地图上，请确认小区名称和位置。',
-      );
+      const positionMessage = position
+        ? administrativeArea
+          ? `已读取照片位置并填写 ${administrativeArea.city}`
+          : '已读取到照片位置信息'
+        : '这张照片没有读到 GPS，已临时放在郑州地图上';
+      const ocrMessage = ocrResult.error
+        ? ocrResult.error
+        : detectedText
+          ? '已识别图片文字，请确认小区名称。'
+          : '未识别到可用文字，请手动填写小区名称。';
+      setMessage(`${positionMessage}；${ocrMessage}`);
     } catch {
       setStatus('error');
       setMessage('照片读取失败，请换一张原图再试。');
@@ -133,7 +153,8 @@ export default function PhotoUploadPanel({ cases, uploadCount, onSave }) {
             <label>
               识别到的水印文字
               <textarea
-                value={draft.detectedText || (draft.ocrSupported ? '' : '当前浏览器不支持内置文字识别，请手动填写小区名称。')}
+                value={draft.detectedText}
+                placeholder={draft.ocrSupported ? '没有识别到可用文字，可手动补充。' : '文字识别失败，可手动补充。'}
                 onChange={(event) => updateDraft('detectedText', event.target.value)}
               />
             </label>

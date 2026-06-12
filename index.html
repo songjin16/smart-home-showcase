@@ -40,18 +40,19 @@
       .file-brand {
         display: inline-flex;
         align-items: center;
-        gap: 10px;
+        gap: 14px;
         border: 0;
         color: inherit;
         background: transparent;
+        font-size: 1.05rem;
         font-weight: 800;
         cursor: pointer;
       }
 
       .file-brand span:first-child {
         display: grid;
-        width: 74px;
-        height: 42px;
+        width: 116px;
+        height: 64px;
         place-items: center;
         border-radius: 8px;
         color: #ffffff;
@@ -66,7 +67,7 @@
         width: 100%;
         height: 100%;
         object-fit: contain;
-        padding: 4px;
+        padding: 6px;
       }
 
       .file-nav {
@@ -352,6 +353,156 @@
         font-weight: 700;
       }
 
+      .file-lighting-section {
+        width: min(1180px, calc(100% - 36px));
+        margin: 0 auto;
+        padding: 58px 0 78px;
+      }
+
+      .file-page .file-lighting-section {
+        width: 100%;
+        padding: 24px 0 0;
+      }
+
+      .file-lighting-heading {
+        max-width: 760px;
+        margin-bottom: 24px;
+      }
+
+      .file-lighting-heading h2 {
+        margin: 0 0 12px;
+        color: #172033;
+        font-size: clamp(1.9rem, 3.5vw, 3.2rem);
+      }
+
+      .file-lighting-heading p:last-child,
+      .file-lighting-card p {
+        color: #5b6778;
+        line-height: 1.75;
+      }
+
+      .file-lighting-grid {
+        display: grid;
+        gap: 20px;
+      }
+
+      .file-lighting-card {
+        display: grid;
+        grid-template-columns: minmax(280px, 0.82fr) minmax(0, 1.18fr);
+        gap: 22px;
+        align-items: stretch;
+        padding: 22px;
+        border: 1px solid rgba(23, 32, 51, 0.08);
+        border-radius: 8px;
+        background: #ffffff;
+        box-shadow: 0 18px 38px rgba(31, 41, 55, 0.06);
+      }
+
+      .file-lighting-card h3 {
+        margin: 0 0 12px;
+        font-size: 1.45rem;
+      }
+
+      .file-lighting-actions,
+      .file-lighting-metrics {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .file-lighting-metrics {
+        margin: 16px 0 18px;
+      }
+
+      .file-lighting-metrics span {
+        padding: 8px 10px;
+        border-radius: 8px;
+        color: #31515b;
+        background: #e7eee8;
+        font-size: 0.9rem;
+        font-weight: 800;
+      }
+
+      .file-lighting-actions a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        padding: 10px 14px;
+        border-radius: 8px;
+        font-weight: 700;
+        text-decoration: none;
+      }
+
+      .file-lighting-hint {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        padding: 10px 14px;
+        border: 1px solid rgba(15, 118, 110, 0.16);
+        border-radius: 8px;
+        color: #0f766e;
+        background: #e7eee8;
+        font-weight: 800;
+      }
+
+      .file-lighting-actions a {
+        border: 1px solid rgba(23, 32, 51, 0.12);
+        color: #172033;
+        background: #ffffff;
+      }
+
+      .file-lighting-gallery {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .file-lighting-gallery a {
+        position: relative;
+        display: grid;
+        min-height: 150px;
+        align-content: space-between;
+        gap: 14px;
+        padding: 18px;
+        border: 1px solid rgba(23, 32, 51, 0.08);
+        border-radius: 8px;
+        color: #172033;
+        text-decoration: none;
+        background: #f7f8f6;
+        transition:
+          border-color 160ms ease,
+          transform 160ms ease,
+          box-shadow 160ms ease;
+      }
+
+      .file-lighting-gallery a:hover {
+        border-color: rgba(15, 118, 110, 0.28);
+        box-shadow: 0 14px 28px rgba(31, 41, 55, 0.08);
+        transform: translateY(-2px);
+      }
+
+      .file-lighting-gallery b {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        color: #9aa5b5;
+        font-size: 0.82rem;
+      }
+
+      .file-lighting-gallery strong {
+        font-size: 1.08rem;
+      }
+
+      .file-lighting-gallery span {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        color: #435163;
+        font-weight: 800;
+      }
+
       .file-panorama {
         position: relative;
         min-height: 420px;
@@ -615,8 +766,13 @@
 
       @media (max-width: 900px) {
         .file-map-layout,
+        .file-lighting-card,
         .file-showroom {
           grid-template-columns: 1fr;
+        }
+
+        .file-lighting-gallery {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
         }
       }
 
@@ -627,13 +783,25 @@
         }
 
         .file-nav,
-        .file-actions {
+        .file-actions,
+        .file-lighting-actions {
           width: 100%;
         }
 
         .file-nav button,
-        .file-actions button {
+        .file-actions button,
+        .file-lighting-actions a,
+        .file-lighting-hint {
           flex: 1;
+        }
+
+        .file-lighting-gallery {
+          grid-template-columns: 1fr;
+        }
+
+        .file-lighting-gallery img {
+          height: auto;
+          min-height: 0;
         }
 
         .file-room {
@@ -755,6 +923,42 @@
           { id: "sensor", name: "门窗传感器", location: "窗边和入户门", role: "检测门窗开合状态，帮助判断家中是否安全。", x: 12, y: 22 },
         ];
 
+        const lightingPlans = [
+          {
+            name: "江湾府灯光模拟方案",
+            type: "灯光场景模拟及照度计算",
+            summary: "用客厅、餐厅、卧室等空间的模拟图，把灯光布置后的明暗效果提前展示给客户，减少只看平面图时的不确定。",
+            metrics: ["57 页仿真报告", "多空间照度截图", "适合方案沟通与交付确认"],
+            reportLabel: "在线查看江湾府灯光仿真报告",
+            reportUrl: "/lighting-simulation/jiangwanfu/江湾府-灯光仿真报告02.pdf",
+            images: [
+              { label: "客厅灯光模拟", src: "/lighting-simulation/jiangwanfu/20ba57c83b6c9c8933c491d67078c341.png", url: "https://yun.kujiale.com/koolux/scenario?obsScenarioAtlasId=3FO4K4YLVYLR" },
+              { label: "餐厅灯光模拟", src: "/lighting-simulation/jiangwanfu/6b4350bfc664bc4717aa084198e87c67.png", url: "https://yun.kujiale.com/koolux/scenario?obsScenarioAtlasId=3FO4K4YLTRP4" },
+              { label: "卧室灯光模拟", src: "/lighting-simulation/jiangwanfu/16c4ad43e9057e6fa7c2d87723382b4d.png", url: "https://yun.kujiale.com/koolux/scenario?obsScenarioAtlasId=3FO4K4YLUWTG" },
+              { label: "过道灯光模拟", src: "/lighting-simulation/jiangwanfu/631fb7aaac83e5b61a8466c919b52aa6.png", url: "https://yun.kujiale.com/koolux/scenario?obsScenarioAtlasId=3FO4K4YLU2Q7" },
+              { label: "次卧灯光模拟", src: "/lighting-simulation/jiangwanfu/b84e7ebedaef27769f569bab97d1e9f3.png", url: "https://yun.kujiale.com/koolux/scenario?obsScenarioAtlasId=3FO4K4YLTYE6" },
+              { label: "书房灯光模拟", src: "/lighting-simulation/jiangwanfu/127407e4089a4e3de7c37cf123b70dd8.png", url: "https://yun.kujiale.com/koolux/scenario?obsScenarioAtlasId=3FO4K4YLTOD3" },
+            ],
+          },
+          {
+            name: "龙湖原山灯光模拟方案",
+            type: "灯光场景模拟及平面系统",
+            summary: "把不同空间的照明效果、点位思路和平面系统资料放在一起，方便客户理解每盏灯为什么这样布置。",
+            metrics: ["41 页平面系统资料", "多房间灯光效果", "适合前期方案比选"],
+            reportLabel: "在线查看龙湖原山灯光仿真报告",
+            reportUrl: "/lighting-simulation/longhu-yuanshan/2026.5.26.平面系统(1) (3).pdf",
+            images: [
+              { label: "客厅灯光模拟", src: "/lighting-simulation/longhu-yuanshan/0797239695dd6d08b1a257f0b025e0d6.png", url: "https://yun.kujiale.com/koolux/scenario?obsScenarioAtlasId=3FO4K4YG7BC2" },
+              { label: "客厅灯光模拟", src: "/lighting-simulation/longhu-yuanshan/38dc392fc3c8ab709a14155a446412ac.png", url: "https://yun.kujiale.com/koolux/scenario?obsScenarioAtlasId=3FO4K4YG5V6M" },
+              { label: "餐厅灯光模拟", src: "/lighting-simulation/longhu-yuanshan/1327a552ac8627aa258cdc09c8fa4d22.png", url: "https://yun.kujiale.com/koolux/scenario?obsScenarioAtlasId=3FO4K4YG62UO" },
+              { label: "卧室灯光模拟", src: "/lighting-simulation/longhu-yuanshan/960de3058674d4ee89d35ff4b3e518e9.png", url: "https://yun.kujiale.com/koolux/scenario?obsScenarioAtlasId=3FO4K4YG667P" },
+              { label: "过道灯光模拟", src: "/lighting-simulation/longhu-yuanshan/7ab1dabfeb3f8b0e2663c61658f86170.png", url: "https://yun.kujiale.com/koolux/scenario?obsScenarioAtlasId=3FO4K4YG7801" },
+              { label: "门厅灯光模拟", src: "/lighting-simulation/longhu-yuanshan/5ffe8b937400d754688d110f9fb7ed6e.png", url: "https://yun.kujiale.com/koolux/scenario?obsScenarioAtlasId=3FO4K4YG5YIN" },
+              { label: "主卧灯光模拟", src: "/lighting-simulation/longhu-yuanshan/466e8693bf91c7d2a7397e4558f042c8.png", url: "https://yun.kujiale.com/koolux/scenario?obsScenarioAtlasId=3FO4K4YG74N0" },
+            ],
+          },
+        ];
+
         let activeCase = cases[0];
         let activeScene = scenes[0];
         let panoramaDrag = null;
@@ -766,6 +970,7 @@
               <nav class="file-nav">
                 <button data-view="cases">案例地图</button>
                 <button data-view="showroom">案例演示</button>
+                <button data-view="lighting">灯光照度模拟</button>
               </nav>
             </header>
             <main id="file-view"></main>
@@ -790,6 +995,7 @@
               if (view === "home") showHome();
               if (view === "cases") showCases();
               if (view === "showroom") showShowroom();
+              if (view === "lighting") showLighting();
             });
           });
           document.querySelector("[data-close]").addEventListener("click", closeModal);
@@ -814,21 +1020,82 @@
                   <div class="file-actions">
                     <button class="file-primary" data-home-cases>查看案例地图</button>
                     <button class="file-ghost" data-home-showroom>查看案例演示</button>
+                    <button class="file-ghost" data-home-lighting>灯光照度模拟</button>
                   </div>
                 </div>
               </div>
               <aside class="file-proof">
-                <strong>郑州落地服务始于 2017</strong>
+                <strong>郑州落地服务始于 2017年</strong>
                 <span>小米米家 / 苹果 HomeKit</span>
                 <div class="file-proof-tags">
                   <b>绿米</b><b>易来</b><b>领普</b><b>皓逸</b>
-                  <b>锐捷网络覆盖</b><b>KEF</b><b>蜗牛</b><b>Sonos</b>
+                  <b>锐捷</b><b>KEF</b><b>蜗牛</b><b>Sonos</b>
+                  <b>创米</b><b>鹿客</b><b>宝特</b><b>向往</b>
                 </div>
               </aside>
             </section>
           `;
           document.querySelector("[data-home-cases]").addEventListener("click", showCases);
           document.querySelector("[data-home-showroom]").addEventListener("click", showShowroom);
+          document.querySelector("[data-home-lighting]").addEventListener("click", showLighting);
+        }
+
+        function showLighting() {
+          document.getElementById("file-view").innerHTML = `
+            <section class="file-page">
+              <button class="file-ghost" data-lighting-back>返回首页</button>
+              ${renderLightingPlans()}
+            </section>
+          `;
+          document.querySelector("[data-lighting-back]").addEventListener("click", showHome);
+        }
+
+        function renderLightingPlans() {
+          return `
+            <section class="file-lighting-section" aria-labelledby="file-lighting-title">
+              <div class="file-lighting-heading">
+                <p class="file-eyebrow">专业灯光方案</p>
+                <h2 id="file-lighting-title">灯光场景模拟及照度计算</h2>
+                <p>在施工前先把灯光效果、亮度分布和关键点位展示出来，客户能更直观看到每个空间的明暗关系，也方便设计和施工人员统一方案。</p>
+              </div>
+              <div class="file-lighting-grid">
+                ${lightingPlans
+                  .map(
+                    (plan) => `
+                      <article class="file-lighting-card">
+                        <div>
+                          <p class="file-eyebrow">${plan.type}</p>
+                          <h3>${plan.name}</h3>
+                          <p>${plan.summary}</p>
+                          <div class="file-lighting-metrics">
+                            ${plan.metrics.map((metric) => `<span>${metric}</span>`).join("")}
+                          </div>
+                          <div class="file-lighting-actions">
+                            <span class="file-lighting-hint">点击下方场景卡片查看方案</span>
+                            <a href="${plan.reportUrl}" target="_blank" rel="noreferrer">${plan.reportLabel}</a>
+                          </div>
+                        </div>
+                        <div class="file-lighting-gallery">
+                          ${plan.images
+                            .map(
+                              (image, index) => `
+                                <a href="${image.url}" target="_blank" rel="noreferrer" aria-label="打开${plan.name}${image.label}">
+                                  <b>${String(index + 1).padStart(2, "0")}</b>
+                                  <span>灯光场景</span>
+                                  <strong>${image.label}</strong>
+                                  <span>在线查看场景 ↗</span>
+                                </a>
+                              `,
+                            )
+                            .join("")}
+                        </div>
+                      </article>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </section>
+          `;
         }
 
         function showCases() {

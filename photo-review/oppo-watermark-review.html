@@ -1,0 +1,480 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OPPO 水印照片审核</title>
+    <style>
+      :root {
+        color: #202124;
+        background: #f6f4ef;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+      }
+
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 3;
+        border-bottom: 1px solid #ded8cd;
+        background: rgba(246, 244, 239, 0.95);
+        backdrop-filter: blur(12px);
+      }
+
+      .bar {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 16px;
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 18px 20px;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 24px;
+      }
+
+      p {
+        margin: 6px 0 0;
+        color: #686158;
+        line-height: 1.6;
+      }
+
+      .controls,
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+      }
+
+      select,
+      input,
+      button {
+        min-height: 38px;
+        border: 1px solid #d0c8ba;
+        border-radius: 8px;
+        background: #fff;
+        color: #202124;
+        font: inherit;
+      }
+
+      select,
+      input {
+        padding: 0 10px;
+      }
+
+      input {
+        width: min(260px, 100%);
+      }
+
+      button {
+        cursor: pointer;
+        padding: 0 14px;
+      }
+
+      button.primary {
+        border-color: #1f5d4a;
+        background: #1f5d4a;
+        color: #fff;
+      }
+
+      main {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 18px 20px 40px;
+      }
+
+      .summary {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+        margin-bottom: 18px;
+      }
+
+      .stat {
+        border: 1px solid #ded8cd;
+        border-radius: 8px;
+        background: #fff;
+        padding: 14px;
+      }
+
+      .stat strong {
+        display: block;
+        font-size: 24px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+        gap: 12px;
+      }
+
+      .photo {
+        overflow: hidden;
+        border: 1px solid #ded8cd;
+        border-radius: 8px;
+        background: #fff;
+      }
+
+      .photo img {
+        display: block;
+        width: 100%;
+        aspect-ratio: 4 / 3;
+        object-fit: cover;
+        background: #ece7dd;
+      }
+
+      .meta {
+        display: grid;
+        gap: 8px;
+        padding: 10px;
+      }
+
+      .name {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-weight: 650;
+      }
+
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      .tag {
+        border-radius: 999px;
+        background: #efe9de;
+        padding: 3px 8px;
+        color: #62594f;
+        font-size: 12px;
+      }
+
+      .review {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 6px;
+      }
+
+      .review button {
+        min-height: 32px;
+        padding: 0 6px;
+        font-size: 13px;
+      }
+
+      .review button.active {
+        border-color: #1f5d4a;
+        background: #e4f2ec;
+        color: #1f5d4a;
+        font-weight: 700;
+      }
+
+      .empty {
+        border: 1px dashed #c8bca9;
+        border-radius: 8px;
+        padding: 28px;
+        text-align: center;
+      }
+
+      .export-panel {
+        display: none;
+        margin-bottom: 18px;
+        border: 1px solid #ded8cd;
+        border-radius: 8px;
+        background: #fff;
+        padding: 14px;
+      }
+
+      .export-panel.visible {
+        display: grid;
+        gap: 10px;
+      }
+
+      .export-panel h2 {
+        margin: 0;
+        font-size: 18px;
+      }
+
+      .export-panel textarea {
+        width: 100%;
+        min-height: 220px;
+        border: 1px solid #d0c8ba;
+        border-radius: 8px;
+        padding: 10px;
+        font: 13px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      }
+
+      .export-panel .actions {
+        justify-content: flex-start;
+      }
+
+      @media (max-width: 760px) {
+        .bar,
+        .summary {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="bar">
+        <div>
+          <h1>OPPO 水印照片审核</h1>
+          <p>先在这里挑选照片。页面只做标记，不会修改原始文件。</p>
+        </div>
+        <div class="actions">
+          <button class="primary" id="exportKeep">导出可用清单</button>
+          <button id="exportAll">导出全部审核结果</button>
+          <button id="clearMarks">清空本页标记</button>
+        </div>
+      </div>
+      <div class="bar">
+        <div class="controls">
+          <select id="monthFilter"></select>
+          <select id="categoryFilter"></select>
+          <select id="statusFilter">
+            <option value="all">全部状态</option>
+            <option value="keep">只看可用</option>
+            <option value="reject">只看排除</option>
+            <option value="unsure">只看待确认</option>
+            <option value="unmarked">只看未标记</option>
+          </select>
+          <input id="searchInput" type="search" placeholder="搜索文件名或日期" />
+        </div>
+        <p id="visibleCount"></p>
+      </div>
+    </header>
+
+    <main>
+      <section class="summary" id="summary"></section>
+      <section class="export-panel" id="exportPanel">
+        <div>
+          <h2 id="exportTitle">导出清单</h2>
+          <p id="exportHint">如果浏览器没有自动下载，请复制下面的内容。</p>
+        </div>
+        <textarea id="exportText" readonly></textarea>
+        <div class="actions">
+          <button class="primary" id="copyExport" type="button">复制清单内容</button>
+          <button id="downloadExport" type="button">再次尝试下载</button>
+        </div>
+      </section>
+      <section class="grid" id="grid"></section>
+      <p class="empty" id="empty" hidden>没有符合条件的照片。</p>
+    </main>
+
+    <script>
+      const markKey = "oppo-watermark-photo-review-v1";
+      const state = {
+        files: [],
+        marks: JSON.parse(localStorage.getItem(markKey) || "{}"),
+      };
+
+      const els = {
+        summary: document.getElementById("summary"),
+        grid: document.getElementById("grid"),
+        empty: document.getElementById("empty"),
+        visibleCount: document.getElementById("visibleCount"),
+        monthFilter: document.getElementById("monthFilter"),
+        categoryFilter: document.getElementById("categoryFilter"),
+        statusFilter: document.getElementById("statusFilter"),
+        searchInput: document.getElementById("searchInput"),
+        exportPanel: document.getElementById("exportPanel"),
+        exportTitle: document.getElementById("exportTitle"),
+        exportHint: document.getElementById("exportHint"),
+        exportText: document.getElementById("exportText"),
+      };
+
+      const formatter = new Intl.NumberFormat("zh-CN");
+      let latestExport = { csv: "", fileName: "" };
+
+      function saveMarks() {
+        localStorage.setItem(markKey, JSON.stringify(state.marks));
+      }
+
+      function makeStat(label, value, helper) {
+        return `<article class="stat"><strong>${value}</strong><span>${label}</span><p>${helper}</p></article>`;
+      }
+
+      function statusOf(file) {
+        return state.marks[file.path] || "";
+      }
+
+      function renderSummary(files) {
+        const keep = state.files.filter((file) => statusOf(file) === "keep").length;
+        const reject = state.files.filter((file) => statusOf(file) === "reject").length;
+        const unsure = state.files.filter((file) => statusOf(file) === "unsure").length;
+        const totalMB = state.files.reduce((sum, file) => sum + file.sizeMB, 0).toFixed(0);
+        els.summary.innerHTML = [
+          makeStat("总文件", formatter.format(state.files.length), `${totalMB} MB，来自 OPPO 互联文件夹`),
+          makeStat("当前显示", formatter.format(files.length), "受月份、类型和搜索条件影响"),
+          makeStat("已标可用", formatter.format(keep), "这些可以下一步复制进项目"),
+          makeStat("排除/待确认", formatter.format(reject + unsure), `排除 ${reject}，待确认 ${unsure}`),
+        ].join("");
+      }
+
+      function fillFilters() {
+        const months = [...new Set(state.files.map((file) => file.month))].sort();
+        const categories = [...new Set(state.files.map((file) => file.category))].sort();
+        els.monthFilter.innerHTML = `<option value="all">全部月份</option>${months
+          .map((month) => `<option value="${month}">${month}</option>`)
+          .join("")}`;
+        els.categoryFilter.innerHTML = `<option value="all">全部类型</option>${categories
+          .map((category) => `<option value="${category}">${category}</option>`)
+          .join("")}`;
+      }
+
+      function filteredFiles() {
+        const month = els.monthFilter.value;
+        const category = els.categoryFilter.value;
+        const status = els.statusFilter.value;
+        const keyword = els.searchInput.value.trim().toLowerCase();
+
+        return state.files.filter((file) => {
+          const mark = statusOf(file);
+          if (month !== "all" && file.month !== month) return false;
+          if (category !== "all" && file.category !== category) return false;
+          if (status === "unmarked" && mark) return false;
+          if (!["all", "unmarked"].includes(status) && mark !== status) return false;
+          if (keyword && !`${file.name} ${file.shotAt} ${file.month}`.toLowerCase().includes(keyword)) return false;
+          return true;
+        });
+      }
+
+      function markPhoto(path, status) {
+        if (state.marks[path] === status) {
+          delete state.marks[path];
+        } else {
+          state.marks[path] = status;
+        }
+        saveMarks();
+        render();
+      }
+
+      function photoCard(file) {
+        const mark = statusOf(file);
+        const isImage = ["jpg", "jpeg", "png", "webp", "heic"].includes(file.ext);
+        const preview = isImage
+          ? `<img loading="lazy" src="${file.fileUrl}" alt="${file.name}" />`
+          : `<img alt="非图片文件" />`;
+        return `<article class="photo">
+          ${preview}
+          <div class="meta">
+            <div class="name" title="${file.name}">${file.name}</div>
+            <div class="tags">
+              <span class="tag">${file.category}</span>
+              <span class="tag">${file.month}</span>
+              <span class="tag">${file.sizeMB} MB</span>
+            </div>
+            <div class="review">
+              <button class="${mark === "keep" ? "active" : ""}" data-mark="keep" data-path="${file.path}">可用</button>
+              <button class="${mark === "reject" ? "active" : ""}" data-mark="reject" data-path="${file.path}">排除</button>
+              <button class="${mark === "unsure" ? "active" : ""}" data-mark="unsure" data-path="${file.path}">待确认</button>
+            </div>
+          </div>
+        </article>`;
+      }
+
+      function render() {
+        const files = filteredFiles();
+        renderSummary(files);
+        els.visibleCount.textContent = `显示 ${formatter.format(files.length)} / ${formatter.format(state.files.length)} 个文件`;
+        els.grid.innerHTML = files.slice(0, 300).map(photoCard).join("");
+        els.empty.hidden = files.length > 0;
+        if (files.length > 300) {
+          els.visibleCount.textContent += "，为保证页面流畅，只展示前 300 个，请缩小筛选范围";
+        }
+      }
+
+      function downloadCsv(csv, fileName) {
+        const blob = new Blob([`\ufeff${csv}`], { type: "text/csv;charset=utf-8" });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = fileName;
+        link.style.display = "none";
+        document.body.appendChild(link);
+        link.click();
+        window.setTimeout(() => {
+          URL.revokeObjectURL(link.href);
+          link.remove();
+        }, 1000);
+      }
+
+      function exportRows(onlyKeep) {
+        const rows = state.files
+          .filter((file) => (onlyKeep ? statusOf(file) === "keep" : true))
+          .map((file) => [statusOf(file) || "未标记", file.category, file.month, file.shotAt, file.sizeMB, file.path]);
+        const csv = ["审核状态,类型,月份,拍摄时间,大小MB,原始路径", ...rows.map((row) => row.map((cell) => `"${String(cell).replaceAll('"', '""')}"`).join(","))].join("\n");
+        const fileName = onlyKeep ? "可用照片清单.csv" : "全部照片审核结果.csv";
+        latestExport = { csv, fileName };
+        els.exportPanel.classList.add("visible");
+        els.exportTitle.textContent = `${onlyKeep ? "可用照片" : "全部照片"}清单，共 ${rows.length} 条`;
+        els.exportHint.textContent = rows.length
+          ? "如果浏览器没有自动下载，请点“复制清单内容”，然后发给我或保存成 CSV 文件。"
+          : "还没有标记可用照片。请先点照片下面的“可用”，再导出。";
+        els.exportText.value = csv;
+        els.exportText.focus();
+        els.exportText.select();
+        if (rows.length) {
+          downloadCsv(csv, fileName);
+        }
+      }
+
+      document.addEventListener("click", (event) => {
+        const button = event.target.closest("[data-mark]");
+        if (!button) return;
+        markPhoto(button.dataset.path, button.dataset.mark);
+      });
+
+      [els.monthFilter, els.categoryFilter, els.statusFilter, els.searchInput].forEach((el) => {
+        el.addEventListener("input", render);
+      });
+
+      document.getElementById("exportKeep").addEventListener("click", () => exportRows(true));
+      document.getElementById("exportAll").addEventListener("click", () => exportRows(false));
+      document.getElementById("downloadExport").addEventListener("click", () => {
+        if (latestExport.csv && latestExport.fileName) downloadCsv(latestExport.csv, latestExport.fileName);
+      });
+      document.getElementById("copyExport").addEventListener("click", async () => {
+        els.exportText.focus();
+        els.exportText.select();
+        try {
+          await navigator.clipboard.writeText(els.exportText.value);
+          els.exportHint.textContent = "已经复制到剪贴板。";
+        } catch {
+          document.execCommand("copy");
+          els.exportHint.textContent = "已选中清单内容。如果没有复制成功，请按 Command+C。";
+        }
+      });
+      document.getElementById("clearMarks").addEventListener("click", () => {
+        state.marks = {};
+        saveMarks();
+        render();
+      });
+
+      fetch("./oppo-watermark-manifest.json")
+        .then((response) => response.json())
+        .then((data) => {
+          state.files = data.files;
+          fillFilters();
+          render();
+        })
+        .catch(() => {
+          els.grid.innerHTML = "";
+          els.empty.hidden = false;
+          els.empty.textContent = "没有读到照片索引，请确认 oppo-watermark-manifest.json 和本页面放在同一目录。";
+        });
+    </script>
+  </body>
+</html>

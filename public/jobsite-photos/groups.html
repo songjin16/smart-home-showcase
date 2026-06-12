@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>工地照片拍摄批次</title>
+    <style>
+      :root {
+        color: #202124;
+        background: #f5f3ee;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+      }
+
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        border-bottom: 1px solid #ded8cd;
+        background: rgba(245, 243, 238, 0.96);
+        backdrop-filter: blur(14px);
+      }
+
+      .bar,
+      main {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 18px 20px;
+      }
+
+      .bar {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 16px;
+        align-items: start;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 26px;
+      }
+
+      p {
+        margin: 6px 0 0;
+        color: #6b645b;
+        line-height: 1.6;
+      }
+
+      a {
+        color: #1f5d4a;
+      }
+
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: flex-end;
+      }
+
+      select,
+      input {
+        min-height: 38px;
+        border: 1px solid #cec5b7;
+        border-radius: 8px;
+        background: #fff;
+        color: #202124;
+        font: inherit;
+        padding: 0 10px;
+      }
+
+      input {
+        width: min(280px, 100%);
+      }
+
+      .summary {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+        margin-bottom: 18px;
+      }
+
+      .stat,
+      .notice,
+      .group {
+        border: 1px solid #ded8cd;
+        border-radius: 8px;
+        background: #fff;
+      }
+
+      .stat,
+      .notice {
+        padding: 14px;
+      }
+
+      .stat strong {
+        display: block;
+        font-size: 24px;
+      }
+
+      .notice {
+        margin-bottom: 18px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 12px;
+      }
+
+      .group {
+        overflow: hidden;
+      }
+
+      .group img {
+        display: block;
+        width: 100%;
+        aspect-ratio: 4 / 3;
+        object-fit: cover;
+        background: #e8e1d6;
+      }
+
+      .body {
+        display: grid;
+        gap: 8px;
+        padding: 12px;
+      }
+
+      .body h2 {
+        margin: 0;
+        font-size: 18px;
+      }
+
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      .tag {
+        border-radius: 999px;
+        background: #efe8dc;
+        padding: 3px 8px;
+        color: #62594f;
+        font-size: 12px;
+      }
+
+      .empty {
+        border: 1px dashed #c8bca9;
+        border-radius: 8px;
+        padding: 28px;
+        text-align: center;
+      }
+
+      @media (max-width: 760px) {
+        .bar,
+        .summary {
+          grid-template-columns: 1fr;
+        }
+
+        .controls {
+          justify-content: flex-start;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="bar">
+        <div>
+          <h1>工地照片拍摄批次</h1>
+          <p>按拍摄日期把照片先分成批次，下一步再把批次合并成小区案例。</p>
+          <p><a href="./index.html">查看全部照片</a></p>
+        </div>
+        <div class="controls">
+          <select id="monthFilter"></select>
+          <input id="searchInput" type="search" placeholder="搜索日期或月份" />
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="notice">
+        <strong>使用方式</strong>
+        <p>同一天拍摄的照片通常属于同一次工地记录。你可以先看每天的批次，再决定哪些日期属于同一个小区。</p>
+      </section>
+      <section class="summary" id="summary"></section>
+      <section class="grid" id="grid"></section>
+      <p class="empty" id="empty" hidden>没有符合条件的批次。</p>
+    </main>
+
+    <script>
+      const state = {
+        groups: [],
+        photosById: new Map(),
+        summary: {},
+      };
+
+      const els = {
+        summary: document.getElementById("summary"),
+        grid: document.getElementById("grid"),
+        empty: document.getElementById("empty"),
+        monthFilter: document.getElementById("monthFilter"),
+        searchInput: document.getElementById("searchInput"),
+      };
+
+      const formatter = new Intl.NumberFormat("zh-CN");
+
+      function makeStat(label, value, helper) {
+        return `<article class="stat"><strong>${value}</strong><span>${label}</span><p>${helper}</p></article>`;
+      }
+
+      function fillFilters() {
+        const months = [...new Set(state.groups.map((group) => group.month || "未知日期"))].sort().reverse();
+        els.monthFilter.innerHTML = `<option value="all">全部月份</option>${months
+          .map((month) => `<option value="${month}">${month}</option>`)
+          .join("")}`;
+      }
+
+      function filteredGroups() {
+        const month = els.monthFilter.value;
+        const keyword = els.searchInput.value.trim().toLowerCase();
+
+        return state.groups.filter((group) => {
+          if (month !== "all" && group.month !== month) return false;
+          if (keyword && !`${group.day} ${group.month}`.toLowerCase().includes(keyword)) return false;
+          return true;
+        });
+      }
+
+      function renderSummary(visible) {
+        const largest = state.groups.reduce((max, group) => Math.max(max, group.count), 0);
+        els.summary.innerHTML = [
+          makeStat("总批次", formatter.format(state.groups.length), "按拍摄日期自动分组"),
+          makeStat("当前匹配", formatter.format(visible.length), "受月份和搜索影响"),
+          makeStat("最大批次", formatter.format(largest), "单日照片数量"),
+          makeStat("照片总数", formatter.format(state.summary.processed ?? 0), "已进入素材库的照片"),
+        ].join("");
+      }
+
+      function groupCard(group) {
+        const firstPhoto = state.photosById.get(group.photos[0]);
+        const cover = firstPhoto?.thumb || group.cover;
+        const query = encodeURIComponent(group.day);
+        return `<article class="group">
+          <img loading="lazy" src="${cover}" alt="${group.day} 照片批次" />
+          <div class="body">
+            <h2>${group.day}</h2>
+            <div class="tags">
+              <span class="tag">${group.count} 张</span>
+              <span class="tag">${group.month}</span>
+              <span class="tag">${group.firstShotAt || "未知时间"}</span>
+            </div>
+            <a href="./index.html?search=${query}">查看这一天照片</a>
+          </div>
+        </article>`;
+      }
+
+      function render() {
+        const visible = filteredGroups();
+        renderSummary(visible);
+        els.grid.innerHTML = visible.map(groupCard).join("");
+        els.empty.hidden = visible.length > 0;
+      }
+
+      [els.monthFilter, els.searchInput].forEach((el) => {
+        el.addEventListener("input", render);
+      });
+
+      Promise.all([fetch("./jobsite-photo-index.json").then((response) => response.json()), fetch("./jobsite-photo-groups.json").then((response) => response.json())])
+        .then(([indexData, groupData]) => {
+          state.summary = indexData.summary;
+          state.photosById = new Map(indexData.photos.map((photo) => [photo.id, photo]));
+          state.groups = groupData.groups;
+          fillFilters();
+          render();
+        })
+        .catch(() => {
+          els.empty.hidden = false;
+          els.empty.textContent = "没有读到批次索引，请先生成 jobsite-photo-groups.json。";
+        });
+    </script>
+  </body>
+</html>

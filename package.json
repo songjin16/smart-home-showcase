@@ -1,5 +1,5 @@
 {
-  "name": "3d-home",
+  "name": "smart-home-showcase",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -15,7 +15,8 @@
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "three": "^0.180.0",
-    "lucide-react": "^0.544.0"
+    "lucide-react": "^0.544.0",
+    "tesseract.js": "^7.0.0"
   },
   "devDependencies": {}
 }

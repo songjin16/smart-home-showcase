@@ -34,8 +34,22 @@ import riverParkAway from '../assets/generated-home-showcase/scene-modes/river-p
 import riverParkBright from '../assets/generated-home-showcase/scene-modes/river-park-bright.png';
 import riverParkRelax from '../assets/generated-home-showcase/scene-modes/river-park-relax.png';
 import riverParkWarm from '../assets/generated-home-showcase/scene-modes/river-park-warm.png';
+import jiangwanfuLightingLiving from '../assets/lighting-simulation/jiangwanfu/20ba57c83b6c9c8933c491d67078c341.png';
+import jiangwanfuLightingDining from '../assets/lighting-simulation/jiangwanfu/6b4350bfc664bc4717aa084198e87c67.png';
+import jiangwanfuLightingBedroom from '../assets/lighting-simulation/jiangwanfu/16c4ad43e9057e6fa7c2d87723382b4d.png';
+import jiangwanfuLightingHall from '../assets/lighting-simulation/jiangwanfu/631fb7aaac83e5b61a8466c919b52aa6.png';
+import jiangwanfuLightingPlan from '../assets/lighting-simulation/jiangwanfu/b84e7ebedaef27769f569bab97d1e9f3.png';
+import jiangwanfuLightingTable from '../assets/lighting-simulation/jiangwanfu/127407e4089a4e3de7c37cf123b70dd8.png';
+import longhuLightingLiving from '../assets/lighting-simulation/longhu-yuanshan/0797239695dd6d08b1a257f0b025e0d6.png';
+import longhuLightingDining from '../assets/lighting-simulation/longhu-yuanshan/1327a552ac8627aa258cdc09c8fa4d22.png';
+import longhuLightingBedroom from '../assets/lighting-simulation/longhu-yuanshan/960de3058674d4ee89d35ff4b3e518e9.png';
+import longhuLightingHall from '../assets/lighting-simulation/longhu-yuanshan/7ab1dabfeb3f8b0e2663c61658f86170.png';
+import longhuLightingPlan from '../assets/lighting-simulation/longhu-yuanshan/5ffe8b937400d754688d110f9fb7ed6e.png';
+import longhuLightingCircuit from '../assets/lighting-simulation/longhu-yuanshan/466e8693bf91c7d2a7397e4558f042c8.png';
+import longhuLightingTable from '../assets/lighting-simulation/longhu-yuanshan/38dc392fc3c8ab709a14155a446412ac.png';
+import { jobsiteGeneratedCases } from './jobsiteGeneratedCases.js';
 
-export const cases = [
+const fixedCases = [
   {
     id: 'river-park',
     name: '建业天筑',
@@ -127,6 +141,98 @@ export const cases = [
     highlights: ['影音室自动进入沉浸灯光', '露台照明按晚间习惯开启', '离家前统一检查多区域状态'],
     benefits: ['大空间管理更省心', '娱乐体验更完整', '离家检查更高效'],
     devices: ['智能窗帘', '智能灯带', '智能音箱', '摄像头', '门窗传感器', '空调控制器'],
+  },
+];
+
+export const cases = [...fixedCases, ...jobsiteGeneratedCases];
+
+export const lightingSimulations = [
+  {
+    id: 'jiangwanfu-lighting',
+    name: '江湾府灯光模拟方案',
+    type: '灯光场景模拟及照度计算',
+    summary: '用客厅、餐厅、卧室等空间的模拟图，把灯光布置后的明暗效果提前展示给客户，减少只看平面图时的不确定。',
+    metrics: ['57 页仿真报告', '多空间照度截图', '适合方案沟通与交付确认'],
+    reportLabel: '在线查看江湾府灯光仿真报告',
+    reportUrl: '/lighting-simulation/jiangwanfu/江湾府-灯光仿真报告02.pdf',
+    images: [
+      {
+        src: jiangwanfuLightingLiving,
+        label: '客厅灯光模拟',
+        kujialeUrl: 'https://yun.kujiale.com/koolux/scenario?obsScenarioAtlasId=3FO4K4YLVYLR',
+      },
+      {
+        src: jiangwanfuLightingDining,
+        label: '餐厅灯光模拟',
+        kujialeUrl: 'https://yun.kujiale.com/koolux/scenario?obsScenarioAtlasId=3FO4K4YLTRP4',
+      },
+      {
+        src: jiangwanfuLightingBedroom,
+        label: '卧室灯光模拟',
+        kujialeUrl: 'https://yun.kujiale.com/koolux/scenario?obsScenarioAtlasId=3FO4K4YLUWTG',
+      },
+      {
+        src: jiangwanfuLightingHall,
+        label: '过道灯光模拟',
+        kujialeUrl: 'https://yun.kujiale.com/koolux/scenario?obsScenarioAtlasId=3FO4K4YLU2Q7',
+      },
+      {
+        src: jiangwanfuLightingPlan,
+        label: '次卧灯光模拟',
+        kujialeUrl: 'https://yun.kujiale.com/koolux/scenario?obsScenarioAtlasId=3FO4K4YLTYE6',
+      },
+      {
+        src: jiangwanfuLightingTable,
+        label: '书房灯光模拟',
+        kujialeUrl: 'https://yun.kujiale.com/koolux/scenario?obsScenarioAtlasId=3FO4K4YLTOD3',
+      },
+    ],
+  },
+  {
+    id: 'longhu-yuanshan-lighting',
+    name: '龙湖原山灯光模拟方案',
+    type: '灯光场景模拟及平面系统',
+    summary: '把不同空间的照明效果、点位思路和平面系统资料放在一起，方便客户理解每盏灯为什么这样布置。',
+    metrics: ['41 页平面系统资料', '多房间灯光效果', '适合前期方案比选'],
+    reportLabel: '在线查看龙湖原山灯光仿真报告',
+    reportUrl: '/lighting-simulation/longhu-yuanshan/2026.5.26.平面系统(1) (3).pdf',
+    images: [
+      {
+        src: longhuLightingLiving,
+        label: '客厅灯光模拟',
+        kujialeUrl: 'https://yun.kujiale.com/koolux/scenario?obsScenarioAtlasId=3FO4K4YG7BC2',
+      },
+      {
+        src: longhuLightingTable,
+        label: '客厅灯光模拟',
+        kujialeUrl: 'https://yun.kujiale.com/koolux/scenario?obsScenarioAtlasId=3FO4K4YG5V6M',
+      },
+      {
+        src: longhuLightingDining,
+        label: '餐厅灯光模拟',
+        kujialeUrl: 'https://yun.kujiale.com/koolux/scenario?obsScenarioAtlasId=3FO4K4YG62UO',
+      },
+      {
+        src: longhuLightingBedroom,
+        label: '卧室灯光模拟',
+        kujialeUrl: 'https://yun.kujiale.com/koolux/scenario?obsScenarioAtlasId=3FO4K4YG667P',
+      },
+      {
+        src: longhuLightingHall,
+        label: '过道灯光模拟',
+        kujialeUrl: 'https://yun.kujiale.com/koolux/scenario?obsScenarioAtlasId=3FO4K4YG7801',
+      },
+      {
+        src: longhuLightingPlan,
+        label: '门厅灯光模拟',
+        kujialeUrl: 'https://yun.kujiale.com/koolux/scenario?obsScenarioAtlasId=3FO4K4YG5YIN',
+      },
+      {
+        src: longhuLightingCircuit,
+        label: '主卧灯光模拟',
+        kujialeUrl: 'https://yun.kujiale.com/koolux/scenario?obsScenarioAtlasId=3FO4K4YG74N0',
+      },
+    ],
   },
 ];
 

@@ -1,0 +1,153 @@
+{
+  "summary": {
+    "generatedAt": "2026-06-12T06:18:59.444Z",
+    "sourceCsv": "/Users/lisongjin/.codex/attachments/e216d2b4-1f9d-4c8d-98c3-edd00d5670d0/pasted-text.txt",
+    "totalRows": 1740,
+    "usableCandidates": 1723,
+    "rejectedRows": 17,
+    "processed": 1723,
+    "missing": 0,
+    "failed": 0,
+    "outputSizeMB": 702.96
+  },
+  "rejected": [
+    {
+      "审核状态": "reject",
+      "类型": "非照片文件",
+      "月份": "未知日期",
+      "拍摄时间": "",
+      "大小MB": "22.09",
+      "原始路径": "/Users/lisongjin/Documents/OPPO 互联/Telegram X-0.24.2.1471-arm64-v8a.apk"
+    },
+    {
+      "审核状态": "reject",
+      "类型": "非照片文件",
+      "月份": "未知日期",
+      "拍摄时间": "",
+      "大小MB": "72.91",
+      "原始路径": "/Users/lisongjin/Documents/OPPO 互联/X-10.29.0-release.0.apk"
+    },
+    {
+      "审核状态": "reject",
+      "类型": "相机照片",
+      "月份": "2025-01",
+      "拍摄时间": "2025-01-06 18:38:33",
+      "大小MB": "2.25",
+      "原始路径": "/Users/lisongjin/Documents/OPPO 互联/IMG_20250106_183833377.jpg"
+    },
+    {
+      "审核状态": "reject",
+      "类型": "非照片文件",
+      "月份": "未知日期",
+      "拍摄时间": "",
+      "大小MB": "220.3",
+      "原始路径": "/Users/lisongjin/Documents/OPPO 互联/tide_website_release.apk"
+    },
+    {
+      "审核状态": "reject",
+      "类型": "截图",
+      "月份": "未知日期",
+      "拍摄时间": "",
+      "大小MB": "0.83",
+      "原始路径": "/Users/lisongjin/Documents/OPPO 互联/Screenshot_20250410_115432_WeChat.jpg"
+    },
+    {
+      "审核状态": "reject",
+      "类型": "截图",
+      "月份": "未知日期",
+      "拍摄时间": "",
+      "大小MB": "1.33",
+      "原始路径": "/Users/lisongjin/Documents/OPPO 互联/Screenshot_20250426_190401_One UI Home.jpg"
+    },
+    {
+      "审核状态": "reject",
+      "类型": "截图",
+      "月份": "未知日期",
+      "拍摄时间": "",
+      "大小MB": "1.25",
+      "原始路径": "/Users/lisongjin/Documents/OPPO 互联/Screenshot_20250501_071106_One UI Home.jpg"
+    },
+    {
+      "审核状态": "reject",
+      "类型": "截图",
+      "月份": "未知日期",
+      "拍摄时间": "",
+      "大小MB": "1.27",
+      "原始路径": "/Users/lisongjin/Documents/OPPO 互联/Screenshot_20250528_100229_One UI Home.jpg"
+    },
+    {
+      "审核状态": "reject",
+      "类型": "截图",
+      "月份": "未知日期",
+      "拍摄时间": "",
+      "大小MB": "1.25",
+      "原始路径": "/Users/lisongjin/Documents/OPPO 互联/Screenshot_20250616_004634_One UI Home.jpg"
+    },
+    {
+      "审核状态": "reject",
+      "类型": "截图",
+      "月份": "未知日期",
+      "拍摄时间": "",
+      "大小MB": "2.08",
+      "原始路径": "/Users/lisongjin/Documents/OPPO 互联/Screenshot_20250721_171456_One UI Home.png"
+    },
+    {
+      "审核状态": "reject",
+      "类型": "截图",
+      "月份": "未知日期",
+      "拍摄时间": "",
+      "大小MB": "0.45",
+      "原始路径": "/Users/lisongjin/Documents/OPPO 互联/Screenshot_20250818_165206_WeChat.png"
+    },
+    {
+      "审核状态": "reject",
+      "类型": "截图",
+      "月份": "未知日期",
+      "拍摄时间": "",
+      "大小MB": "2",
+      "原始路径": "/Users/lisongjin/Documents/OPPO 互联/Screenshot_20250920_200142_One UI Home.png"
+    },
+    {
+      "审核状态": "reject",
+      "类型": "微信拍摄",
+      "月份": "未知日期",
+      "拍摄时间": "",
+      "大小MB": "0.98",
+      "原始路径": "/Users/lisongjin/Documents/OPPO 互联/wx_camera_1758434652051.jpg"
+    },
+    {
+      "审核状态": "reject",
+      "类型": "其它",
+      "月份": "未知日期",
+      "拍摄时间": "",
+      "大小MB": "45.63",
+      "原始路径": "/Users/lisongjin/Documents/OPPO 互联/TG-2026-01-27-151615991.mp4"
+    },
+    {
+      "审核状态": "reject",
+      "类型": "微信导出",
+      "月份": "未知日期",
+      "拍摄时间": "",
+      "大小MB": "0.46",
+      "原始路径": "/Users/lisongjin/Documents/OPPO 互联/mmexport1773320926618.jpg"
+    },
+    {
+      "审核状态": "reject",
+      "类型": "截图",
+      "月份": "未知日期",
+      "拍摄时间": "",
+      "大小MB": "0.88",
+      "原始路径": "/Users/lisongjin/Documents/OPPO 互联/Screenshot_20260430_170136_WeCom.png"
+    },
+    {
+      "审核状态": "reject",
+      "类型": "微信导出",
+      "月份": "未知日期",
+      "拍摄时间": "",
+      "大小MB": "0.09",
+      "原始路径": "/Users/lisongjin/Documents/OPPO 互联/mmexport1779325350448.jpg"
+    }
+  ],
+  "missing": [],
+  "failed": []
+}

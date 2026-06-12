@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>工地照片素材库</title>
+    <style>
+      :root {
+        color: #202124;
+        background: #f5f3ee;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+      }
+
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        border-bottom: 1px solid #ded8cd;
+        background: rgba(245, 243, 238, 0.96);
+        backdrop-filter: blur(14px);
+      }
+
+      .bar,
+      main {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 18px 20px;
+      }
+
+      .bar {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 16px;
+        align-items: start;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 26px;
+      }
+
+      p {
+        margin: 6px 0 0;
+        color: #6b645b;
+        line-height: 1.6;
+      }
+
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: flex-end;
+      }
+
+      select,
+      input {
+        min-height: 38px;
+        border: 1px solid #cec5b7;
+        border-radius: 8px;
+        background: #fff;
+        color: #202124;
+        font: inherit;
+        padding: 0 10px;
+      }
+
+      input {
+        width: min(280px, 100%);
+      }
+
+      .summary {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+        margin-bottom: 18px;
+      }
+
+      .stat,
+      .notice,
+      .photo {
+        border: 1px solid #ded8cd;
+        border-radius: 8px;
+        background: #fff;
+      }
+
+      .stat {
+        padding: 14px;
+      }
+
+      .stat strong {
+        display: block;
+        font-size: 24px;
+      }
+
+      .notice {
+        margin-bottom: 18px;
+        padding: 14px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+        gap: 12px;
+      }
+
+      .photo {
+        overflow: hidden;
+      }
+
+      .photo a {
+        display: block;
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .photo img {
+        display: block;
+        width: 100%;
+        aspect-ratio: 4 / 3;
+        object-fit: cover;
+        background: #e8e1d6;
+      }
+
+      .meta {
+        display: grid;
+        gap: 6px;
+        padding: 10px;
+      }
+
+      .name {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-weight: 650;
+      }
+
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      .tag {
+        border-radius: 999px;
+        background: #efe8dc;
+        padding: 3px 8px;
+        color: #62594f;
+        font-size: 12px;
+      }
+
+      .empty {
+        border: 1px dashed #c8bca9;
+        border-radius: 8px;
+        padding: 28px;
+        text-align: center;
+      }
+
+      @media (max-width: 760px) {
+        .bar,
+        .summary {
+          grid-template-columns: 1fr;
+        }
+
+        .controls {
+          justify-content: flex-start;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="bar">
+        <div>
+          <h1>工地照片素材库</h1>
+          <p>这里是已筛选照片的网页副本，还没有进入正式服务地图。</p>
+        </div>
+        <div class="controls">
+          <select id="monthFilter"></select>
+          <select id="typeFilter"></select>
+          <input id="searchInput" type="search" placeholder="搜索文件名、日期或路径" />
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="notice">
+        <strong>整理说明</strong>
+        <p>页面显示的是压缩图和缩略图。原始 OPPO 互联文件夹没有被删除、改名或移动。</p>
+      </section>
+      <section class="summary" id="summary"></section>
+      <section class="grid" id="grid"></section>
+      <p class="empty" id="empty" hidden>没有符合条件的照片。</p>
+    </main>
+
+    <script>
+      window.__JOBSITE_PHOTO_INDEX__ = null;
+
+      const state = {
+        photos: [],
+        summary: {},
+      };
+
+      const els = {
+        summary: document.getElementById("summary"),
+        grid: document.getElementById("grid"),
+        empty: document.getElementById("empty"),
+        monthFilter: document.getElementById("monthFilter"),
+        typeFilter: document.getElementById("typeFilter"),
+        searchInput: document.getElementById("searchInput"),
+      };
+
+      const formatter = new Intl.NumberFormat("zh-CN");
+      const initialSearch = new URLSearchParams(window.location.search).get("search") || "";
+      els.searchInput.value = initialSearch;
+
+      function makeStat(label, value, helper) {
+        return `<article class="stat"><strong>${value}</strong><span>${label}</span><p>${helper}</p></article>`;
+      }
+
+      function fillFilters() {
+        const months = [...new Set(state.photos.map((photo) => photo.month || "未知日期"))].sort();
+        const types = [...new Set(state.photos.map((photo) => photo.type || "未知类型"))].sort();
+        els.monthFilter.innerHTML = `<option value="all">全部月份</option>${months
+          .map((month) => `<option value="${month}">${month}</option>`)
+          .join("")}`;
+        els.typeFilter.innerHTML = `<option value="all">全部类型</option>${types
+          .map((type) => `<option value="${type}">${type}</option>`)
+          .join("")}`;
+      }
+
+      function filteredPhotos() {
+        const month = els.monthFilter.value;
+        const type = els.typeFilter.value;
+        const keyword = els.searchInput.value.trim().toLowerCase();
+
+        return state.photos.filter((photo) => {
+          if (month !== "all" && photo.month !== month) return false;
+          if (type !== "all" && photo.type !== type) return false;
+          if (keyword && !`${photo.fileName} ${photo.shotAt} ${photo.originalPath}`.toLowerCase().includes(keyword)) return false;
+          return true;
+        });
+      }
+
+      function renderSummary(visible) {
+        const visibleHelper = visible.length > 240 ? "为保证页面流畅，先显示前 240 张，请用月份或搜索缩小范围" : "受月份、类型和搜索影响";
+        els.summary.innerHTML = [
+          makeStat("素材总数", formatter.format(state.photos.length), "已生成网页副本的照片"),
+          makeStat("当前匹配", formatter.format(visible.length), visibleHelper),
+          makeStat("输出大小", `${state.summary.outputSizeMB ?? 0} MB`, "包含大图、缩略图和索引"),
+          makeStat("缺失/失败", formatter.format((state.summary.missing ?? 0) + (state.summary.failed ?? 0)), "详情见 processing-report.md"),
+        ].join("");
+      }
+
+      function photoCard(photo) {
+        return `<article class="photo">
+          <a href="${photo.image}" target="_blank" rel="noreferrer">
+            <img loading="lazy" src="${photo.thumb}" alt="${photo.fileName}" />
+            <div class="meta">
+              <div class="name" title="${photo.fileName}">${photo.fileName}</div>
+              <div class="tags">
+                <span class="tag">${photo.month || "未知日期"}</span>
+                <span class="tag">${photo.type}</span>
+                <span class="tag">${photo.imageSizeMB} MB</span>
+              </div>
+            </div>
+          </a>
+        </article>`;
+      }
+
+      function render() {
+        const visible = filteredPhotos();
+        renderSummary(visible);
+        els.grid.innerHTML = visible.slice(0, 240).map(photoCard).join("");
+        els.empty.hidden = visible.length > 0;
+      }
+
+      [els.monthFilter, els.typeFilter, els.searchInput].forEach((el) => {
+        el.addEventListener("input", render);
+      });
+
+      const indexDataPromise = window.__JOBSITE_PHOTO_INDEX__
+        ? Promise.resolve(window.__JOBSITE_PHOTO_INDEX__)
+        : fetch("./jobsite-photo-index.json").then((response) => response.json());
+
+      indexDataPromise
+        .then((data) => {
+          state.photos = data.photos;
+          state.summary = data.summary;
+          fillFilters();
+          render();
+        })
+        .catch(() => {
+          els.empty.hidden = false;
+          els.empty.textContent = "没有读到素材索引，请先生成 jobsite-photo-index.json。";
+        });
+    </script>
+  </body>
+</html>
