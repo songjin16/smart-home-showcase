@@ -2,8 +2,11 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   ArrowLeft,
   ArrowRight,
+  Calculator,
+  FileText,
   Home,
   LampCeiling,
+  Layers3,
   MapPin,
   Moon,
   PencilLine,
@@ -20,9 +23,10 @@ import {
   X,
 } from 'lucide-react';
 import * as THREE from 'three';
-import { cases, lightingSimulations, productPoints, scenes } from './data/demoData.js';
+import { budgetPlans, cases, lightingSimulations, productPoints, scenes, showroomCases } from './data/demoData.js';
 import CaseAmap from './components/CaseAmap.jsx';
 import PhotoUploadPanel from './components/PhotoUploadPanel.jsx';
+import zhizhuangxiaAvatar from './assets/zhizhuangxia-avatar.png';
 import zhizhuangxiaLogo from './assets/zhizhuangxia-logo.png';
 
 const UPLOADED_PHOTOS_KEY = 'zhizhuangxia_uploaded_photos';
@@ -35,6 +39,161 @@ const IS_LOCAL_EDITING_ENABLED = import.meta.env.DEV || import.meta.env.VITE_ENA
 const EMPTY_PRODUCT_IMAGE =
   'https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=800&q=80';
 const ALL_SERVICE_AREAS = '全部区域';
+const inspectionVrProjects = [
+  {
+    id: 'zhizhuangxia-flagship-showroom',
+    name: '智装侠人车家旗舰体验展厅',
+    city: '郑州 智装侠展厅',
+    date: '精选作品',
+    type: '展厅全景',
+    summary: '智装侠人车家旗舰体验展厅全景，可在线查看展厅空间和场景布置。',
+    url: 'https://vr.zzxaiot.com/tour/11f380427787dd7e',
+  },
+  {
+    id: 'muse-high-end-showroom',
+    name: '木色高定展厅',
+    city: '展厅案例',
+    date: '精选作品',
+    type: '展厅全景',
+    summary: '木色高定展厅全景案例，适合展示定制展厅空间和客户参观动线。',
+    url: 'https://vr.zzxaiot.com/tour/357ea796c53af541',
+  },
+  {
+    id: 'xintiancheng-villa-construction',
+    name: '新田城别墅施工全景',
+    city: '郑州 新田城',
+    date: '2025年4月1日',
+    type: '水电验收 / 施工全景',
+    summary: '使用现有智装侠 VR 全景系统查看施工现场，可切换场景、查看导航，并支持独立打开分享。',
+    url: 'https://vr.zzxaiot.com/tour/9d2b80aacb7ce463',
+  },
+  {
+    id: 'rongsheng-huafu-construction',
+    name: '荣盛华府施工全景',
+    city: '施工项目',
+    date: '精选作品',
+    type: '施工全景',
+    summary: '荣盛华府施工现场全景，用于查看工地阶段、现场环境和施工细节。',
+    url: 'https://vr.zzxaiot.com/tour/06376a96dd260f9a',
+  },
+  {
+    id: 'zhongshan-baote-showroom',
+    name: '中山宝特展厅',
+    city: '中山 展厅',
+    date: '精选作品',
+    type: '展厅全景',
+    summary: '中山宝特展厅全景案例，可用于客户线上了解展厅空间。',
+    url: 'https://vr.zzxaiot.com/tour/bf1f8620ea2cb631',
+  },
+  {
+    id: 'snail-audio-shenzhen-flagship',
+    name: '蜗牛音响深圳旗舰店',
+    city: '深圳 门店',
+    date: '精选作品',
+    type: '门店全景',
+    summary: '蜗牛音响深圳旗舰店全景，展示门店空间、产品陈列和体验区。',
+    url: 'https://vr.zzxaiot.com/tour/1b04023996bee4c3',
+  },
+  {
+    id: 'xingguang-haoyi-showroom',
+    name: '星光联盟皓逸展厅',
+    city: '展厅案例',
+    date: '精选作品',
+    type: '展厅全景',
+    summary: '星光联盟皓逸展厅全景，可在线查看展厅布局与产品展示区域。',
+    url: 'https://vr.zzxaiot.com/tour/a6714477955e23af',
+  },
+  {
+    id: 'beijing-qumei-whole-home',
+    name: '北京曲美整家',
+    city: '北京 整家案例',
+    date: '精选作品',
+    type: '整家全景',
+    summary: '北京曲美整家全景案例，适合展示整家空间和客户参观体验。',
+    url: 'https://vr.zzxaiot.com/tour/dc43bb8b86dcb508',
+  },
+  {
+    id: 'beijing-no9-mansion',
+    name: '北京9 号公馆',
+    city: '北京 9号公馆',
+    date: '精选作品',
+    type: '项目全景',
+    summary: '北京9号公馆项目全景，可在线查看空间环境和项目展示内容。',
+    url: 'https://vr.zzxaiot.com/tour/ddd80b07f51cc5b8',
+  },
+  {
+    id: 'mixue-headquarters',
+    name: '蜜雪冰城总部',
+    city: '总部案例',
+    date: '精选作品',
+    type: '商业空间全景',
+    summary: '蜜雪冰城总部全景案例，用于展示商业空间和办公环境。',
+    url: 'https://vr.zzxaiot.com/tour/17e0124e9229bdad',
+  },
+  {
+    id: 'jinke-smart-valley-office',
+    name: '金科智慧谷办事大厅',
+    city: '办事大厅',
+    date: '精选作品',
+    type: '公共空间全景',
+    summary: '金科智慧谷办事大厅全景，可在线查看公共服务空间布局。',
+    url: 'https://vr.zzxaiot.com/tour/2fd06980c87c0fe5',
+  },
+  {
+    id: 'shanshui-shangjing-construction',
+    name: '善水上镜施工全景',
+    city: '施工项目',
+    date: '精选作品',
+    type: '施工全景',
+    summary: '善水上镜施工现场全景，适合查看施工阶段和现场记录。',
+    url: 'https://vr.zzxaiot.com/tour/6246da33269d76f1',
+  },
+  {
+    id: 'xiangxie-lishe-construction',
+    name: '香榭丽舍施工全景',
+    city: '施工项目',
+    date: '精选作品',
+    type: '施工全景',
+    summary: '香榭丽舍施工现场全景，用于工地验收和施工过程展示。',
+    url: 'https://vr.zzxaiot.com/tour/10fa14463feea281',
+  },
+  {
+    id: 'junlin-dayuan-construction',
+    name: '君临大院施工全景',
+    city: '施工项目',
+    date: '精选作品',
+    type: '施工全景',
+    summary: '君临大院施工现场全景，可查看工地空间、线路和现场状态。',
+    url: 'https://vr.zzxaiot.com/tour/348f4e59527baaec',
+  },
+  {
+    id: 'cuiyuan-yunding-construction',
+    name: '翠园云鼎施工全景',
+    city: '施工项目',
+    date: '精选作品',
+    type: '施工全景',
+    summary: '翠园云鼎施工现场全景，适合线上查看项目施工和验收记录。',
+    url: 'https://vr.zzxaiot.com/tour/4bd7f97d06196886',
+  },
+  {
+    id: 'biguiyuan-xihu-construction',
+    name: '碧桂园西湖施工全景',
+    city: '施工项目',
+    date: '精选作品',
+    type: '施工全景',
+    summary: '碧桂园西湖施工现场全景，用于查看施工现场和验收细节。',
+    url: 'https://vr.zzxaiot.com/tour/fd5db81b3d870902',
+  },
+  {
+    id: 'aoyuan-construction',
+    name: '奥园施工全景',
+    city: '施工项目',
+    date: '精选作品',
+    type: '施工全景',
+    summary: '奥园施工现场全景，可作为工地验收和施工展示案例。',
+    url: 'https://vr.zzxaiot.com/tour/6bd9b51832451f1e',
+  },
+];
 
 const sceneIcons = {
   bright: Sun,
@@ -367,6 +526,9 @@ function Shell({ children, navigate }) {
     <div className="app-shell">
       <header className="topbar">
         <button className="brand" onClick={() => navigate('/')} aria-label="返回首页">
+          <span className="brand-avatar">
+            <img src={zhizhuangxiaAvatar} alt="" />
+          </span>
           <span className="brand-mark image-logo">
             <img src={zhizhuangxiaLogo} alt="智装侠" />
           </span>
@@ -374,8 +536,10 @@ function Shell({ children, navigate }) {
         </button>
         <nav className="nav-links" aria-label="主导航">
           <button onClick={() => navigate('/cases')}>服务地图</button>
-          <button onClick={() => navigate(`/showroom/${cases[0].id}`)}>案例演示</button>
+          <button onClick={() => navigate(`/showroom/${showroomCases[0].id}`)}>案例演示</button>
+          <button onClick={() => navigate('/budget')}>方案预算</button>
           <button onClick={() => navigate('/lighting')}>灯光照度模拟</button>
+          <button onClick={() => navigate('/inspection-panoramas')}>水电验收全景</button>
         </nav>
       </header>
       {children}
@@ -411,13 +575,21 @@ function HomePage({ navigate }) {
                 <MapPin size={20} />
                 查看服务地图
               </button>
-              <button className="secondary-action" onClick={() => navigate(`/showroom/${cases[0].id}`)}>
+              <button className="secondary-action" onClick={() => navigate(`/showroom/${showroomCases[0].id}`)}>
                 <Play size={20} />
                 查看案例演示
               </button>
               <button className="secondary-action" onClick={() => navigate('/lighting')}>
                 <LampCeiling size={20} />
                 灯光照度模拟
+              </button>
+              <button className="secondary-action" onClick={() => navigate('/inspection-panoramas')}>
+                <Layers3 size={20} />
+                水电验收全景
+              </button>
+              <button className="secondary-action" onClick={() => navigate('/budget')}>
+                <Calculator size={20} />
+                方案预算样本
               </button>
             </div>
           </div>
@@ -442,6 +614,220 @@ function HomePage({ navigate }) {
           </div>
         </aside>
       </section>
+    </main>
+  );
+}
+
+function BudgetPlanPage({ navigate }) {
+  const [activePlanId, setActivePlanId] = useState(null);
+  const [activePageIndex, setActivePageIndex] = useState(0);
+  const pageDragRef = useRef(null);
+  const activePlan = budgetPlans.find((plan) => plan.id === activePlanId) ?? null;
+
+  const openPlan = (plan) => {
+    setActivePlanId(plan.id);
+    setActivePageIndex(0);
+    window.setTimeout(() => document.getElementById('budget-viewer')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 0);
+  };
+
+  const goToBudgetPage = useCallback(
+    (direction) => {
+      if (!activePlan) return;
+      setActivePageIndex((current) => Math.min(activePlan.pages.length - 1, Math.max(0, current + direction)));
+    },
+    [activePlan],
+  );
+
+  const startBudgetPageDrag = (event) => {
+    pageDragRef.current = {
+      x: event.clientX,
+      y: event.clientY,
+      pointerId: event.pointerId,
+    };
+    event.currentTarget.setPointerCapture(event.pointerId);
+  };
+
+  const finishBudgetPageDrag = (event) => {
+    const drag = pageDragRef.current;
+    pageDragRef.current = null;
+
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
+
+    if (!drag) return;
+
+    const deltaX = event.clientX - drag.x;
+    const deltaY = event.clientY - drag.y;
+    const absX = Math.abs(deltaX);
+    const absY = Math.abs(deltaY);
+    const swipeThreshold = 48;
+
+    if (Math.max(absX, absY) < swipeThreshold) return;
+
+    const isHorizontal = absX >= absY;
+    const direction = isHorizontal ? (deltaX < 0 ? 1 : -1) : deltaY < 0 ? 1 : -1;
+    goToBudgetPage(direction);
+  };
+
+  return (
+    <main className="page budget-page">
+      <button className="text-back" onClick={() => navigate('/')}>
+        <ArrowLeft size={18} />
+        返回首页
+      </button>
+
+      <section className="budget-hero" aria-labelledby="budget-title">
+        <div>
+          <p className="eyebrow">方案预算样本</p>
+          <h1 id="budget-title">让客户看懂钱花在哪，也看懂家怎么用</h1>
+          <p>
+            我们把设备清单、空间位置、生活场景和预算放在同一套资料里。客户不用只看一张密密麻麻的报价表，
+            可以知道每个房间有哪些功能、每个场景由哪些设备配合完成。
+          </p>
+          <div className="budget-proof-row" aria-label="方案预算优势">
+            <span>按空间分区</span>
+            <span>设备和功能对应</span>
+            <span>方便增减预算</span>
+          </div>
+        </div>
+
+        <div className="budget-sheet-preview" aria-label="方案预算表格示意">
+          <div className="budget-sheet-head">
+            <span>空间</span>
+            <span>功能</span>
+            <span>预算说明</span>
+          </div>
+          {[
+            ['客厅', '灯光 / 窗帘 / 影音', '回家、观影、会客'],
+            ['卧室', '灯光 / 空调 / 窗帘', '睡前、起夜、晨起'],
+            ['安防', '门锁 / 传感器 / 摄像头', '离家提醒、异常提醒'],
+            ['网络', '路由 / 面板 / 覆盖', '全屋稳定联网'],
+          ].map((row) => (
+            <div className="budget-sheet-row" key={row[0]}>
+              {row.map((item) => (
+                <span key={item}>{item}</span>
+              ))}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="budget-value-grid" aria-label="预算方案说明">
+        <article>
+          <FileText size={24} />
+          <h2>不是只报设备价格</h2>
+          <p>把每个空间的功能、设备和使用场景一起说明，客户更容易判断哪些是刚需，哪些可以后期增加。</p>
+        </article>
+        <article>
+          <Layers3 size={24} />
+          <h2>复杂户型也能拆清楚</h2>
+          <p>复式、别墅、多楼层项目可以按楼层和区域拆分，减少沟通遗漏，也方便施工前确认。</p>
+        </article>
+        <article>
+          <Calculator size={24} />
+          <h2>预算调整更有依据</h2>
+          <p>客户想控制预算时，可以按场景和区域取舍，而不是盲目删设备，最终使用体验更稳定。</p>
+        </article>
+      </section>
+
+      <section className="budget-plan-section" aria-labelledby="budget-sample-title">
+        <div className="budget-section-heading">
+          <p className="eyebrow">典型方案模板</p>
+          <h2 id="budget-sample-title">可打开查看的方案预算样本</h2>
+          <p>下面这些是做过的典型方案类型，用来展示资料的专业程度和客户理解成本，而不是固定报价。</p>
+        </div>
+
+        <div className="budget-plan-grid">
+          {budgetPlans.map((plan) => (
+            <article className="budget-plan-card" key={plan.id}>
+              {plan.thumbnail ? (
+                <img className="budget-plan-thumb" src={plan.thumbnail} alt={`${plan.name}封面预览`} />
+              ) : (
+                <div className="budget-plan-icon">
+                  <FileText size={30} />
+                </div>
+              )}
+              <p className="eyebrow">{plan.homeType}</p>
+              <h3>{plan.name}</h3>
+              <p>{plan.focus}</p>
+              <div className="budget-plan-meta">
+                <span>{plan.pageLabel}</span>
+                {plan.highlights.map((item) => (
+                  <span key={item}>{item}</span>
+                ))}
+              </div>
+              <button className="primary-action full" type="button" onClick={() => openPlan(plan)}>
+                <FileText size={18} />
+                在线观看方案
+              </button>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      {activePlan ? (
+        <section className="budget-viewer" id="budget-viewer" aria-labelledby="budget-viewer-title">
+          <div className="budget-viewer-head">
+            <div>
+              <p className="eyebrow">在线预览</p>
+              <h2 id="budget-viewer-title">{activePlan.name}</h2>
+              <p>
+                第 {activePageIndex + 1} 页 / 共 {activePlan.pages.length} 页
+              </p>
+            </div>
+            <div className="budget-viewer-actions">
+              <button
+                className="secondary-action"
+                type="button"
+                onClick={() => goToBudgetPage(-1)}
+                disabled={activePageIndex === 0}
+              >
+                <ArrowLeft size={18} />
+                上一页
+              </button>
+              <button
+                className="secondary-action"
+                type="button"
+                onClick={() => goToBudgetPage(1)}
+                disabled={activePageIndex >= activePlan.pages.length - 1}
+              >
+                下一页
+                <ArrowRight size={18} />
+              </button>
+            </div>
+          </div>
+
+          <div className="budget-viewer-layout">
+            <div
+              className="budget-page-image"
+              role="group"
+              aria-label="拖动切换预算页面"
+              onPointerDown={startBudgetPageDrag}
+              onPointerUp={finishBudgetPageDrag}
+              onPointerCancel={() => {
+                pageDragRef.current = null;
+              }}
+            >
+              <img src={activePlan.pages[activePageIndex]} alt={`${activePlan.name}第 ${activePageIndex + 1} 页`} />
+            </div>
+            <aside className="budget-page-strip" aria-label={`${activePlan.name}页面列表`}>
+              {activePlan.pages.map((page, index) => (
+                <button
+                  key={page}
+                  className={index === activePageIndex ? 'active' : ''}
+                  type="button"
+                  onClick={() => setActivePageIndex(index)}
+                  aria-label={`查看第 ${index + 1} 页`}
+                >
+                  <img src={page} alt="" />
+                  <span>{String(index + 1).padStart(2, '0')}</span>
+                </button>
+              ))}
+            </aside>
+          </div>
+        </section>
+      ) : null}
     </main>
   );
 }
@@ -509,6 +895,94 @@ function LightingSimulationSection() {
         ))}
       </div>
     </section>
+  );
+}
+
+function InspectionPanoramaPage({ navigate }) {
+  const [activeProjectId, setActiveProjectId] = useState(inspectionVrProjects[0].id);
+  const activeProject = inspectionVrProjects.find((project) => project.id === activeProjectId) ?? inspectionVrProjects[0];
+
+  return (
+    <main className="page inspection-page">
+      <button className="text-back" onClick={() => navigate('/')}>
+        <ArrowLeft size={18} />
+        返回首页
+      </button>
+
+      <section className="inspection-hero" aria-labelledby="inspection-title">
+        <div className="inspection-copy">
+          <p className="eyebrow">水电验收全景图</p>
+          <h1 id="inspection-title">全景工地验收 VR</h1>
+          <p>接入智装侠现有全景工地验收系统，把施工现场、水电点位和验收记录放在当前网页里直接查看。</p>
+          <div className="inspection-meta" aria-label="项目资料">
+            <span>
+              <Home size={18} />
+              {activeProject.city}
+            </span>
+            <span>
+              <FileText size={18} />
+              {activeProject.date}
+            </span>
+            <span>
+              <Layers3 size={18} />
+              {inspectionVrProjects.length} 个 VR 项目
+            </span>
+          </div>
+        </div>
+        <div className="inspection-note">
+          <strong>查看方式</strong>
+          <span>在下方窗口中拖动画面查看现场，也可以新窗口打开使用完整全景功能。</span>
+        </div>
+      </section>
+
+      <section className="inspection-viewer-section" aria-labelledby="active-vr-title">
+        <div className="inspection-viewer-layout">
+          <div className="inspection-viewer-main">
+            <div className="inspection-viewer-head">
+              <div>
+                <p className="eyebrow">当前项目</p>
+                <h2 id="active-vr-title">{activeProject.name}</h2>
+                <p>{activeProject.summary}</p>
+              </div>
+              <a className="secondary-action" href={activeProject.url} target="_blank" rel="noreferrer">
+                <ExternalLink size={18} />
+                新窗口打开
+              </a>
+            </div>
+
+            <iframe
+              className="inspection-vr-frame"
+              title={`${activeProject.name}VR全景`}
+              src={activeProject.url}
+              allow="fullscreen; gyroscope; accelerometer"
+              allowFullScreen
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+          </div>
+
+          <aside className="inspection-project-panel" aria-label="水电验收 VR 项目列表">
+            <div>
+              <p className="eyebrow">项目列表</p>
+              <h2>选择全景项目</h2>
+            </div>
+            <div className="inspection-project-list">
+              {inspectionVrProjects.map((project) => (
+                <button
+                  key={project.id}
+                  className={project.id === activeProject.id ? 'active' : ''}
+                  type="button"
+                  onClick={() => setActiveProjectId(project.id)}
+                >
+                  <span>{project.name}</span>
+                  <small>{project.type}</small>
+                  <strong>{project.city}</strong>
+                </button>
+              ))}
+            </div>
+          </aside>
+        </div>
+      </section>
+    </main>
   );
 }
 
@@ -641,7 +1115,7 @@ function CaseMapPage({ fixedCaseTools, navigate }) {
                   </button>
                 ))}
                 {mapPhotoCase.photos.length > 18 ? (
-                  <button className="map-photo-more" type="button" onClick={() => navigate(`/showroom/${mapPhotoCase.id}`)}>
+                  <button className="map-photo-more" type="button" onClick={() => setPreviewPhoto(mapSelectedPhoto)}>
                     +{mapPhotoCase.photos.length - 18}
                   </button>
                 ) : null}
@@ -782,7 +1256,14 @@ function CaseMapPage({ fixedCaseTools, navigate }) {
                   <ArrowRight size={18} />
                 </button>
               ) : (
-                <button className="primary-action full" type="button" onClick={() => navigate(`/showroom/${activeCase.id}`)}>
+                <button
+                  className="primary-action full"
+                  type="button"
+                  onClick={() => {
+                    setMapPhotoCaseId(activeCase.id);
+                    setMapPhotoId(activeCase.photos[0]?.id ?? null);
+                  }}
+                >
                   查看 {activeCase.photos.length} 张现场图片
                   <ArrowRight size={18} />
                 </button>
@@ -839,10 +1320,6 @@ function CaseDetailPage({ caseItem, fixedCaseTools, navigate }) {
           <h1>{caseItem.name}</h1>
           <p>{caseItem.intro}</p>
           <div className="detail-actions">
-            <button className="primary-action" onClick={() => navigate(`/showroom/${caseItem.id}`)}>
-              查看案例演示
-              <ArrowRight size={18} />
-            </button>
             <button className="secondary-action" onClick={() => navigate('/cases')}>
               查看更多服务记录
             </button>
@@ -1202,10 +1679,8 @@ function PanoramaViewer({ src, alt }) {
   );
 }
 
-function ShowroomPage({ caseId, fixedCaseTools, navigate }) {
-  const { photos } = useUploadedPhotos();
-  const allCases = useMemo(() => buildCasesWithPhotos(fixedCaseTools.fixedCases, photos), [fixedCaseTools.fixedCases, photos]);
-  const caseItem = allCases.find((item) => item.id === caseId);
+function ShowroomPage({ caseId, navigate }) {
+  const caseItem = showroomCases.find((item) => item.id === caseId);
   const { config, saveImagePoints, resetImagePoints } = useHotspotConfig();
   const [activeSceneId, setActiveSceneId] = useState('bright');
   const [activeImageId, setActiveImageId] = useState('scene:bright');
@@ -1233,10 +1708,10 @@ function ShowroomPage({ caseId, fixedCaseTools, navigate }) {
 
   useEffect(() => {
     setActiveSceneId('bright');
-    setActiveImageId(caseItem?.sceneImages ? 'scene:bright' : `photo:${caseItem?.photos?.[0]?.id ?? ''}`);
+    setActiveImageId('scene:bright');
     setActiveProduct(null);
     setIsManaging(false);
-  }, [caseId, caseItem?.photos, caseItem?.sceneImages]);
+  }, [caseId]);
 
   useEffect(() => {
     setDraftPoints(savedPoints.map((point) => cloneProductPoint(point)));
@@ -1247,8 +1722,8 @@ function ShowroomPage({ caseId, fixedCaseTools, navigate }) {
     return (
       <main className="page centered-page">
         <h1>没有找到这个案例</h1>
-        <button className="secondary-action" onClick={() => navigate('/cases')}>
-          返回服务地图
+        <button className="secondary-action" onClick={() => navigate('/')}>
+          返回首页
         </button>
       </main>
     );
@@ -1332,7 +1807,7 @@ function ShowroomPage({ caseId, fixedCaseTools, navigate }) {
       </section>
 
       <section className="showroom-case-switcher" aria-label="案例列表">
-        {fixedCaseTools.fixedCases.map((item) => (
+        {showroomCases.map((item) => (
           <button
             key={item.id}
             className={item.id === caseItem.id ? 'active' : ''}
@@ -1457,8 +1932,6 @@ function ShowroomPage({ caseId, fixedCaseTools, navigate }) {
           </label>
         </footer>
       ) : null}
-
-      <FixedCaseMaintenance caseItem={caseItem.isUploaded ? null : caseItem} fixedCaseTools={fixedCaseTools} />
 
       {activeProduct ? (
         <ProductModal
@@ -1701,17 +2174,19 @@ export default function App() {
   const caseMatch = path.match(/^\/cases\/([^/]+)$/);
   const showroomMatch = path.match(/^\/showroom(?:\/([^/]+))?$/);
   const caseId = caseMatch ? decodeURIComponent(caseMatch[1]) : null;
-  const showroomCaseId = showroomMatch?.[1] ? decodeURIComponent(showroomMatch[1]) : cases[0].id;
+  const showroomCaseId = showroomMatch?.[1] ? decodeURIComponent(showroomMatch[1]) : showroomCases[0].id;
   const caseItem = caseId ? fixedCaseTools.fixedCases.find((item) => item.id === caseId) : null;
 
   return (
     <Shell navigate={navigate}>
       {path === '/' ? <HomePage navigate={navigate} /> : null}
       {path === '/cases' ? <CaseMapPage fixedCaseTools={fixedCaseTools} navigate={navigate} /> : null}
+      {path === '/budget' ? <BudgetPlanPage navigate={navigate} /> : null}
       {path === '/lighting' ? <LightingSimulationPage navigate={navigate} /> : null}
+      {path === '/inspection-panoramas' ? <InspectionPanoramaPage navigate={navigate} /> : null}
       {caseMatch ? <CaseDetailPage caseItem={caseItem} fixedCaseTools={fixedCaseTools} navigate={navigate} /> : null}
-      {showroomMatch ? <ShowroomPage caseId={showroomCaseId} fixedCaseTools={fixedCaseTools} navigate={navigate} /> : null}
-      {!['/', '/cases', '/lighting'].includes(path) && !caseMatch && !showroomMatch ? (
+      {showroomMatch ? <ShowroomPage caseId={showroomCaseId} navigate={navigate} /> : null}
+      {!['/', '/cases', '/budget', '/lighting', '/inspection-panoramas'].includes(path) && !caseMatch && !showroomMatch ? (
         <main className="page centered-page">
           <h1>页面不存在</h1>
           <button className="secondary-action" onClick={() => navigate('/')}>

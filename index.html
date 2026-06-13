@@ -503,6 +503,257 @@
         font-weight: 800;
       }
 
+      .file-budget-hero {
+        display: grid;
+        grid-template-columns: minmax(0, 0.95fr) minmax(360px, 1.05fr);
+        gap: 28px;
+        align-items: center;
+        margin-top: 24px;
+      }
+
+      .file-budget-hero h1 {
+        font-size: clamp(2rem, 4.2vw, 4rem);
+      }
+
+      .file-budget-hero p,
+      .file-budget-card p,
+      .file-budget-heading p {
+        color: #5b6778;
+        line-height: 1.7;
+      }
+
+      .file-budget-tags,
+      .file-budget-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .file-budget-tags span,
+      .file-budget-meta span {
+        padding: 7px 10px;
+        border-radius: 8px;
+        color: #31515b;
+        background: #e7eee8;
+        font-weight: 800;
+      }
+
+      .file-budget-tags span {
+        color: #0f766e;
+        background: #dff4ee;
+      }
+
+      .file-budget-sheet,
+      .file-budget-card {
+        border: 1px solid rgba(23, 32, 51, 0.08);
+        border-radius: 8px;
+        background: #ffffff;
+        box-shadow: 0 18px 38px rgba(31, 41, 55, 0.06);
+      }
+
+      .file-budget-sheet {
+        overflow: hidden;
+      }
+
+      .file-budget-sheet div {
+        display: grid;
+        grid-template-columns: 0.58fr 1.05fr 1.05fr;
+      }
+
+      .file-budget-sheet div:first-child {
+        color: #ffffff;
+        background: #172033;
+        font-weight: 900;
+      }
+
+      .file-budget-sheet div:not(:first-child) {
+        border-top: 1px solid rgba(23, 32, 51, 0.07);
+      }
+
+      .file-budget-sheet span {
+        padding: 14px;
+        border-right: 1px solid rgba(23, 32, 51, 0.07);
+        line-height: 1.5;
+      }
+
+      .file-budget-sheet span:last-child {
+        border-right: 0;
+      }
+
+      .file-budget-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+        margin-top: 20px;
+      }
+
+      .file-budget-card {
+        display: flex;
+        min-width: 0;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 18px;
+      }
+
+      .file-budget-card h3 {
+        margin: 0;
+        font-size: 1.24rem;
+      }
+
+      .file-budget-thumb,
+      .file-budget-icon {
+        width: 100%;
+        aspect-ratio: 16 / 10;
+        border: 1px solid rgba(23, 32, 51, 0.08);
+        border-radius: 8px;
+        background: #eef4f1;
+      }
+
+      .file-budget-thumb {
+        object-fit: cover;
+        object-position: top;
+      }
+
+      .file-budget-icon {
+        display: grid;
+        place-items: center;
+        color: #0f766e;
+        font-size: 2rem;
+        font-weight: 900;
+      }
+
+      .file-budget-card button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        min-height: 44px;
+        border: 0;
+        margin-top: auto;
+        border-radius: 8px;
+        color: #ffffff;
+        background: #0f766e;
+        cursor: pointer;
+        font: inherit;
+        font-weight: 800;
+      }
+
+      .file-budget-viewer {
+        display: grid;
+        gap: 18px;
+        margin-top: 28px;
+        padding: 20px;
+        border: 1px solid rgba(23, 32, 51, 0.08);
+        border-radius: 8px;
+        background: #ffffff;
+        box-shadow: 0 18px 38px rgba(31, 41, 55, 0.06);
+      }
+
+      .file-budget-viewer-head {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .file-budget-viewer-head h2 {
+        margin: 0 0 6px;
+        font-size: clamp(1.45rem, 2.4vw, 2.2rem);
+      }
+
+      .file-budget-viewer-head p:last-child {
+        color: #5b6778;
+        line-height: 1.6;
+      }
+
+      .file-budget-viewer-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .file-budget-viewer-actions button {
+        min-height: 44px;
+        border: 1px solid rgba(23, 32, 51, 0.12);
+        border-radius: 8px;
+        padding: 10px 14px;
+        color: #172033;
+        background: #ffffff;
+        cursor: pointer;
+        font-weight: 800;
+      }
+
+      .file-budget-viewer-actions button:disabled {
+        opacity: 0.48;
+        cursor: not-allowed;
+      }
+
+      .file-budget-viewer-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 150px;
+        gap: 16px;
+        align-items: start;
+      }
+
+      .file-budget-page-image {
+        display: grid;
+        min-height: 520px;
+        place-items: center;
+        overflow: hidden;
+        border: 1px solid rgba(23, 32, 51, 0.08);
+        border-radius: 8px;
+        background: #eef4f1;
+      }
+
+      .file-budget-page-image img {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+
+      .file-budget-page-strip {
+        display: grid;
+        max-height: 720px;
+        gap: 10px;
+        overflow-y: auto;
+        padding-right: 4px;
+      }
+
+      .file-budget-page-strip button {
+        position: relative;
+        overflow: hidden;
+        border: 2px solid transparent;
+        border-radius: 8px;
+        padding: 0;
+        background: #eef4f1;
+        cursor: pointer;
+      }
+
+      .file-budget-page-strip button.active {
+        border-color: #0f766e;
+      }
+
+      .file-budget-page-strip img {
+        display: block;
+        width: 100%;
+        aspect-ratio: 3 / 4;
+        object-fit: cover;
+        object-position: top;
+      }
+
+      .file-budget-page-strip span {
+        position: absolute;
+        right: 6px;
+        bottom: 6px;
+        padding: 3px 6px;
+        border-radius: 6px;
+        color: #ffffff;
+        background: rgba(11, 18, 32, 0.76);
+        font-size: 0.78rem;
+        font-weight: 900;
+      }
+
       .file-panorama {
         position: relative;
         min-height: 420px;
@@ -767,6 +1018,9 @@
       @media (max-width: 900px) {
         .file-map-layout,
         .file-lighting-card,
+        .file-budget-hero,
+        .file-budget-grid,
+        .file-budget-viewer-layout,
         .file-showroom {
           grid-template-columns: 1fr;
         }
@@ -786,6 +1040,7 @@
         .file-actions,
         .file-lighting-actions {
           width: 100%;
+          flex-wrap: wrap;
         }
 
         .file-nav button,
@@ -797,6 +1052,40 @@
 
         .file-lighting-gallery {
           grid-template-columns: 1fr;
+        }
+
+        .file-budget-sheet {
+          overflow-x: auto;
+        }
+
+        .file-budget-sheet div {
+          min-width: 620px;
+        }
+
+        .file-budget-viewer {
+          padding: 14px;
+        }
+
+        .file-budget-viewer-head {
+          align-items: stretch;
+          flex-direction: column;
+        }
+
+        .file-budget-viewer-actions button {
+          flex: 1;
+        }
+
+        .file-budget-page-image {
+          min-height: 280px;
+        }
+
+        .file-budget-page-strip {
+          grid-auto-flow: column;
+          grid-auto-columns: 118px;
+          max-height: none;
+          overflow-x: auto;
+          overflow-y: hidden;
+          padding: 0 0 4px;
         }
 
         .file-lighting-gallery img {
@@ -959,8 +1248,66 @@
           },
         ];
 
+        const makeBudgetPlanPages = (planId, pageCount) =>
+          Array.from({ length: pageCount }, (_, index) => `/budget-plans/${planId}/page-${String(index + 1).padStart(2, "0")}.webp`);
+
+        const budgetPlans = [
+          {
+            id: "130sqm-smart-home",
+            name: "130 平米家智能方案",
+            homeType: "三室两厅",
+            focus: "全屋基础智能、灯光、窗帘、安防和常用生活场景",
+            pageLabel: "37 页在线预览",
+            thumbnail: "/budget-plans/130sqm-smart-home/page-01.webp",
+            pages: makeBudgetPlanPages("130sqm-smart-home", 37),
+            highlights: ["按空间列清设备", "预算和功能对应", "适合标准户型沟通"],
+          },
+          {
+            id: "150sqm-smart-home",
+            name: "150 平米家智能方案",
+            homeType: "改善型住宅",
+            focus: "多房间灯光、窗帘、环境控制和回家离家场景",
+            pageLabel: "51 页在线预览",
+            thumbnail: "/budget-plans/150sqm-smart-home/page-01.webp",
+            pages: makeBudgetPlanPages("150sqm-smart-home", 51),
+            highlights: ["重点功能一眼看清", "适合客户快速比选", "方便后期增减项目"],
+          },
+          {
+            id: "duplex-aqara",
+            name: "复式绿米智能方案",
+            homeType: "复式住宅",
+            focus: "上下层联动、分区控制、家人常用场景和设备清单",
+            pageLabel: "25 页在线预览",
+            thumbnail: "/budget-plans/duplex-aqara-smart/page-01.webp",
+            pages: makeBudgetPlanPages("duplex-aqara-smart", 25),
+            highlights: ["分楼层看配置", "减少沟通遗漏", "设备和场景放在一起"],
+          },
+          {
+            id: "four-floor-villa-mijia",
+            name: "四层别墅米家智能方案",
+            homeType: "四层别墅",
+            focus: "多楼层灯光、安防、窗帘、空调和生活模式",
+            pageLabel: "51 页在线预览",
+            thumbnail: "/budget-plans/four-floor-villa-mijia/page-01.webp",
+            pages: makeBudgetPlanPages("four-floor-villa-mijia", 51),
+            highlights: ["按楼层拆分预算", "适合复杂项目确认", "客户能理解每层用途"],
+          },
+          {
+            id: "four-floor-villa-av",
+            name: "四层别墅背景音乐及影音方案",
+            homeType: "别墅影音",
+            focus: "背景音乐、影音娱乐、分区播放和设备搭配",
+            pageLabel: "15 页在线预览",
+            thumbnail: "/budget-plans/four-floor-villa-av/page-01.webp",
+            pages: makeBudgetPlanPages("four-floor-villa-av", 15),
+            highlights: ["影音系统单独说明", "设备搭配更直观", "适合高端空间深化"],
+          },
+        ];
+
         let activeCase = cases[0];
         let activeScene = scenes[0];
+        let activeBudgetPlan = null;
+        let activeBudgetPage = 0;
         let panoramaDrag = null;
 
         function render() {
@@ -970,6 +1317,7 @@
               <nav class="file-nav">
                 <button data-view="cases">案例地图</button>
                 <button data-view="showroom">案例演示</button>
+                <button data-view="budget">方案预算</button>
                 <button data-view="lighting">灯光照度模拟</button>
               </nav>
             </header>
@@ -995,6 +1343,7 @@
               if (view === "home") showHome();
               if (view === "cases") showCases();
               if (view === "showroom") showShowroom();
+              if (view === "budget") showBudget();
               if (view === "lighting") showLighting();
             });
           });
@@ -1021,6 +1370,7 @@
                     <button class="file-primary" data-home-cases>查看案例地图</button>
                     <button class="file-ghost" data-home-showroom>查看案例演示</button>
                     <button class="file-ghost" data-home-lighting>灯光照度模拟</button>
+                    <button class="file-ghost" data-home-budget>方案预算样本</button>
                   </div>
                 </div>
               </div>
@@ -1038,6 +1388,123 @@
           document.querySelector("[data-home-cases]").addEventListener("click", showCases);
           document.querySelector("[data-home-showroom]").addEventListener("click", showShowroom);
           document.querySelector("[data-home-lighting]").addEventListener("click", showLighting);
+          document.querySelector("[data-home-budget]").addEventListener("click", showBudget);
+        }
+
+        function showBudget() {
+          document.getElementById("file-view").innerHTML = `
+            <section class="file-page">
+              <button class="file-ghost" data-budget-back>返回首页</button>
+              <div class="file-budget-hero">
+                <div>
+                  <p class="file-eyebrow">方案预算样本</p>
+                  <h1>让客户看懂钱花在哪，也看懂家怎么用</h1>
+                  <p>我们把设备清单、空间位置、生活场景和预算放在同一套资料里。客户不用只看一张密密麻麻的报价表，可以知道每个房间有哪些功能、每个场景由哪些设备配合完成。</p>
+                  <div class="file-budget-tags">
+                    <span>按空间分区</span>
+                    <span>设备和功能对应</span>
+                    <span>方便增减预算</span>
+                  </div>
+                </div>
+                <div class="file-budget-sheet" aria-label="方案预算表格示意">
+                  <div><span>空间</span><span>功能</span><span>预算说明</span></div>
+                  <div><span>客厅</span><span>灯光 / 窗帘 / 影音</span><span>回家、观影、会客</span></div>
+                  <div><span>卧室</span><span>灯光 / 空调 / 窗帘</span><span>睡前、起夜、晨起</span></div>
+                  <div><span>安防</span><span>门锁 / 传感器 / 摄像头</span><span>离家提醒、异常提醒</span></div>
+                  <div><span>网络</span><span>路由 / 面板 / 覆盖</span><span>全屋稳定联网</span></div>
+                </div>
+              </div>
+              <div class="file-budget-heading" style="margin-top:34px">
+                <p class="file-eyebrow">典型方案模板</p>
+                <h2>可打开查看的方案预算样本</h2>
+                <p>下面这些是做过的典型方案类型，用来展示资料的专业程度和客户理解成本，而不是固定报价。</p>
+              </div>
+              <div class="file-budget-grid">
+                ${budgetPlans
+                  .map(
+                    (plan) => `
+                      <article class="file-budget-card">
+                        ${
+                          plan.thumbnail
+                            ? `<img class="file-budget-thumb" src="${plan.thumbnail}" alt="${plan.name}封面预览">`
+                            : `<div class="file-budget-icon">PDF</div>`
+                        }
+                        <p class="file-eyebrow">${plan.homeType}</p>
+                        <h3>${plan.name}</h3>
+                        <p>${plan.focus}</p>
+                        <div class="file-budget-meta">
+                          <span>${plan.pageLabel}</span>
+                          ${plan.highlights.map((item) => `<span>${item}</span>`).join("")}
+                        </div>
+                        <button type="button" data-budget-open="${plan.id}">在线观看方案</button>
+                      </article>
+                    `,
+                  )
+                  .join("")}
+              </div>
+              ${renderBudgetViewer()}
+            </section>
+          `;
+          document.querySelector("[data-budget-back]").addEventListener("click", showHome);
+          document.querySelectorAll("[data-budget-open]").forEach((button) => {
+            button.addEventListener("click", () => {
+              activeBudgetPlan = budgetPlans.find((plan) => plan.id === button.dataset.budgetOpen) || budgetPlans[0];
+              activeBudgetPage = 0;
+              showBudget();
+              setTimeout(() => document.getElementById("file-budget-viewer")?.scrollIntoView({ behavior: "smooth", block: "start" }), 0);
+            });
+          });
+          document.querySelector("[data-budget-prev]")?.addEventListener("click", () => {
+            activeBudgetPage = Math.max(0, activeBudgetPage - 1);
+            showBudget();
+          });
+          document.querySelector("[data-budget-next]")?.addEventListener("click", () => {
+            if (!activeBudgetPlan) return;
+            activeBudgetPage = Math.min(activeBudgetPlan.pages.length - 1, activeBudgetPage + 1);
+            showBudget();
+          });
+          document.querySelectorAll("[data-budget-page]").forEach((button) => {
+            button.addEventListener("click", () => {
+              activeBudgetPage = Number(button.dataset.budgetPage) || 0;
+              showBudget();
+            });
+          });
+        }
+
+        function renderBudgetViewer() {
+          if (!activeBudgetPlan) return "";
+          return `
+            <section class="file-budget-viewer" id="file-budget-viewer" aria-labelledby="file-budget-viewer-title">
+              <div class="file-budget-viewer-head">
+                <div>
+                  <p class="file-eyebrow">在线预览</p>
+                  <h2 id="file-budget-viewer-title">${activeBudgetPlan.name}</h2>
+                  <p>第 ${activeBudgetPage + 1} 页 / 共 ${activeBudgetPlan.pages.length} 页</p>
+                </div>
+                <div class="file-budget-viewer-actions">
+                  <button type="button" data-budget-prev ${activeBudgetPage === 0 ? "disabled" : ""}>上一页</button>
+                  <button type="button" data-budget-next ${activeBudgetPage >= activeBudgetPlan.pages.length - 1 ? "disabled" : ""}>下一页</button>
+                </div>
+              </div>
+              <div class="file-budget-viewer-layout">
+                <div class="file-budget-page-image">
+                  <img src="${activeBudgetPlan.pages[activeBudgetPage]}" alt="${activeBudgetPlan.name}第 ${activeBudgetPage + 1} 页">
+                </div>
+                <aside class="file-budget-page-strip" aria-label="${activeBudgetPlan.name}页面列表">
+                  ${activeBudgetPlan.pages
+                    .map(
+                      (page, index) => `
+                        <button class="${index === activeBudgetPage ? "active" : ""}" type="button" data-budget-page="${index}" aria-label="查看第 ${index + 1} 页">
+                          <img src="${page}" alt="">
+                          <span>${String(index + 1).padStart(2, "0")}</span>
+                        </button>
+                      `,
+                    )
+                    .join("")}
+                </aside>
+              </div>
+            </section>
+          `;
         }
 
         function showLighting() {

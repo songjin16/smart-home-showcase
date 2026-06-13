@@ -34,8 +34,8 @@ button {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
-  padding: 14px clamp(18px, 4vw, 56px);
+  gap: 14px;
+  padding: 8px clamp(18px, 4vw, 56px);
   border-bottom: 1px solid rgba(23, 32, 51, 0.08);
   background: rgba(245, 247, 244, 0.9);
   backdrop-filter: blur(16px);
@@ -55,25 +55,43 @@ button {
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 14px;
+  gap: 8px;
   min-width: 0;
-  font-size: 1.05rem;
+  font-size: 0.98rem;
   font-weight: 800;
+}
+
+.brand-avatar {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 auto;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 50%;
+  background: #ffffff;
+}
+
+.brand-avatar img {
+  display: block;
+  width: 88%;
+  height: 88%;
+  object-fit: contain;
 }
 
 .brand-mark {
   display: grid;
-  width: 116px;
-  height: 64px;
+  width: 96px;
+  height: 46px;
   place-items: center;
   border-radius: 8px;
   color: #ffffff;
-  background: #ffffff;
+  background: transparent;
   letter-spacing: 0;
 }
 
 .image-logo {
-  padding: 6px;
+  padding: 2px;
 }
 
 .image-logo img {
@@ -86,13 +104,14 @@ button {
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
 }
 
 .nav-links button {
-  padding: 10px 12px;
+  padding: 7px 9px;
   border-radius: 8px;
   color: #435163;
+  line-height: 1.2;
 }
 
 .nav-links button:hover {
@@ -275,6 +294,12 @@ h2 {
   background: #115e59;
 }
 
+.primary-action:disabled,
+.secondary-action:disabled {
+  opacity: 0.48;
+  cursor: not-allowed;
+}
+
 .secondary-action {
   color: #172033;
   border-color: rgba(23, 32, 51, 0.16);
@@ -333,6 +358,491 @@ h2 {
   padding: 0 0 18px;
 }
 
+.inspection-page {
+  display: grid;
+  gap: 24px;
+}
+
+.inspection-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 0.34fr);
+  gap: 22px;
+  align-items: stretch;
+  padding: clamp(24px, 4vw, 38px);
+  border: 1px solid rgba(23, 32, 51, 0.08);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(15, 118, 110, 0.1), rgba(255, 255, 255, 0.92)),
+    #ffffff;
+  box-shadow: 0 18px 38px rgba(31, 41, 55, 0.06);
+}
+
+.inspection-copy h1 {
+  max-width: 720px;
+  margin-bottom: 14px;
+  font-size: clamp(2rem, 4vw, 3.8rem);
+  line-height: 1.08;
+}
+
+.inspection-copy p:not(.eyebrow),
+.inspection-viewer-head p:last-child {
+  max-width: 720px;
+  color: #5b6778;
+  line-height: 1.75;
+}
+
+.inspection-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.inspection-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 11px;
+  border: 1px solid rgba(23, 32, 51, 0.1);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.76);
+  color: #314154;
+  font-weight: 800;
+}
+
+.inspection-note {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 8px;
+  min-height: 180px;
+  padding: 18px;
+  border-radius: 8px;
+  color: #ffffff;
+  background: linear-gradient(135deg, #0f766e, #172033);
+}
+
+.inspection-note strong {
+  font-size: 1.15rem;
+}
+
+.inspection-note span {
+  color: rgba(255, 255, 255, 0.82);
+  line-height: 1.6;
+}
+
+.inspection-viewer-section {
+  display: grid;
+  gap: 16px;
+}
+
+.inspection-viewer-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 18px;
+  align-items: start;
+}
+
+.inspection-viewer-main,
+.inspection-project-panel {
+  border: 1px solid rgba(23, 32, 51, 0.08);
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 18px 38px rgba(31, 41, 55, 0.06);
+}
+
+.inspection-viewer-main {
+  display: grid;
+  gap: 14px;
+  padding: 14px;
+}
+
+.inspection-viewer-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.inspection-viewer-head h2 {
+  margin-bottom: 8px;
+  font-size: clamp(1.45rem, 2vw, 2rem);
+}
+
+.inspection-vr-frame {
+  display: block;
+  width: 100%;
+  height: min(72vh, 720px);
+  min-height: 560px;
+  border: 0;
+  border-radius: 8px;
+  background: #101827;
+}
+
+.inspection-project-panel {
+  display: grid;
+  gap: 14px;
+  max-height: calc(100vh - 96px);
+  overflow: auto;
+  padding: 16px;
+  position: sticky;
+  top: 78px;
+}
+
+.inspection-project-panel h2 {
+  margin-bottom: 0;
+}
+
+.inspection-project-list {
+  display: grid;
+  gap: 10px;
+}
+
+.inspection-project-list button {
+  display: grid;
+  gap: 6px;
+  width: 100%;
+  padding: 14px;
+  border: 1px solid rgba(23, 32, 51, 0.1);
+  border-radius: 8px;
+  background: #ffffff;
+  color: #172033;
+  cursor: pointer;
+  text-align: left;
+}
+
+.inspection-project-list button.active {
+  border-color: rgba(15, 118, 110, 0.5);
+  background: #eef8f5;
+}
+
+.inspection-project-list span,
+.inspection-project-list small,
+.inspection-project-list strong {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.inspection-project-list span {
+  font-weight: 900;
+}
+
+.inspection-project-list small {
+  color: #6b7280;
+}
+
+.inspection-project-list strong {
+  color: #0f766e;
+  font-size: 0.92rem;
+}
+
+.budget-page {
+  display: grid;
+  gap: 30px;
+}
+
+.budget-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(360px, 1.05fr);
+  gap: 28px;
+  align-items: center;
+}
+
+.budget-hero h1 {
+  max-width: 760px;
+  font-size: clamp(2.05rem, 4.2vw, 4rem);
+}
+
+.budget-hero p {
+  max-width: 720px;
+  color: #5b6778;
+  line-height: 1.75;
+}
+
+.budget-proof-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 18px;
+}
+
+.budget-proof-row span {
+  padding: 8px 11px;
+  border-radius: 8px;
+  color: #0f766e;
+  background: #dff4ee;
+  font-weight: 800;
+}
+
+.budget-sheet-preview {
+  overflow: hidden;
+  border: 1px solid rgba(23, 32, 51, 0.1);
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 22px 54px rgba(31, 41, 55, 0.08);
+}
+
+.budget-sheet-head,
+.budget-sheet-row {
+  display: grid;
+  grid-template-columns: 0.58fr 1.05fr 1.05fr;
+  min-width: 0;
+}
+
+.budget-sheet-head span,
+.budget-sheet-row span {
+  min-width: 0;
+  padding: 15px 16px;
+  border-right: 1px solid rgba(23, 32, 51, 0.07);
+}
+
+.budget-sheet-head span:last-child,
+.budget-sheet-row span:last-child {
+  border-right: 0;
+}
+
+.budget-sheet-head {
+  color: #ffffff;
+  background: #172033;
+  font-weight: 900;
+}
+
+.budget-sheet-row {
+  border-top: 1px solid rgba(23, 32, 51, 0.07);
+}
+
+.budget-sheet-row span {
+  color: #435163;
+  line-height: 1.5;
+}
+
+.budget-sheet-row span:first-child {
+  color: #0f766e;
+  font-weight: 900;
+}
+
+.budget-value-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.budget-value-grid article,
+.budget-plan-card {
+  border: 1px solid rgba(23, 32, 51, 0.08);
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 18px 38px rgba(31, 41, 55, 0.06);
+}
+
+.budget-value-grid article {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  padding: 18px;
+}
+
+.budget-value-grid svg {
+  color: #0f766e;
+}
+
+.budget-value-grid h2 {
+  margin-bottom: 0;
+}
+
+.budget-value-grid p {
+  color: #5b6778;
+  line-height: 1.65;
+}
+
+.budget-plan-section {
+  display: grid;
+  gap: 20px;
+}
+
+.budget-section-heading {
+  max-width: 760px;
+}
+
+.budget-section-heading h2 {
+  font-size: clamp(1.75rem, 3vw, 2.7rem);
+}
+
+.budget-section-heading p:last-child {
+  color: #5b6778;
+  line-height: 1.7;
+}
+
+.budget-plan-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.budget-plan-card {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 18px;
+}
+
+.budget-plan-icon {
+  display: grid;
+  width: 54px;
+  height: 54px;
+  place-items: center;
+  border-radius: 8px;
+  color: #0f766e;
+  background: #e7eee8;
+}
+
+.budget-plan-thumb {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border: 1px solid rgba(23, 32, 51, 0.08);
+  border-radius: 8px;
+  background: #eef4f1;
+  object-fit: cover;
+  object-position: top;
+}
+
+.budget-plan-card h3 {
+  margin: 0;
+  color: #172033;
+  font-size: 1.24rem;
+}
+
+.budget-plan-card p:not(.eyebrow) {
+  color: #5b6778;
+  line-height: 1.65;
+}
+
+.budget-plan-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: auto 0 4px;
+}
+
+.budget-plan-meta span {
+  padding: 7px 9px;
+  border-radius: 8px;
+  color: #31515b;
+  background: #e7eee8;
+  font-size: 0.88rem;
+  font-weight: 800;
+}
+
+.budget-viewer {
+  display: grid;
+  gap: 18px;
+  padding: 20px;
+  border: 1px solid rgba(23, 32, 51, 0.08);
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 18px 38px rgba(31, 41, 55, 0.06);
+}
+
+.budget-viewer-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.budget-viewer-head h2 {
+  margin-bottom: 6px;
+  font-size: clamp(1.45rem, 2.4vw, 2.2rem);
+}
+
+.budget-viewer-head p:last-child {
+  color: #5b6778;
+  line-height: 1.6;
+}
+
+.budget-viewer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.budget-viewer-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 150px;
+  gap: 16px;
+  align-items: start;
+}
+
+.budget-page-image {
+  display: grid;
+  min-height: 520px;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid rgba(23, 32, 51, 0.08);
+  border-radius: 8px;
+  background: #eef4f1;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.budget-page-image:active {
+  cursor: grabbing;
+}
+
+.budget-page-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+}
+
+.budget-page-strip {
+  display: grid;
+  max-height: 720px;
+  gap: 10px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.budget-page-strip button {
+  position: relative;
+  overflow: hidden;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  padding: 0;
+  background: #eef4f1;
+  cursor: pointer;
+}
+
+.budget-page-strip button.active {
+  border-color: #0f766e;
+}
+
+.budget-page-strip img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  object-position: top;
+}
+
+.budget-page-strip span {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  padding: 3px 6px;
+  border-radius: 6px;
+  color: #ffffff;
+  background: rgba(11, 18, 32, 0.76);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
 .lighting-heading {
   max-width: 760px;
   margin-bottom: 24px;
@@ -358,7 +868,7 @@ h2 {
   display: grid;
   grid-template-columns: minmax(280px, 0.82fr) minmax(0, 1.18fr);
   gap: 22px;
-  align-items: stretch;
+  align-items: start;
   padding: 22px;
   border: 1px solid rgba(23, 32, 51, 0.08);
   border-radius: 8px;
@@ -389,7 +899,7 @@ h2 {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin: auto 0 18px;
+  margin: 2px 0 16px;
 }
 
 .lighting-metrics span {
@@ -424,18 +934,18 @@ h2 {
 .lighting-gallery {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
+  gap: 10px;
   min-width: 0;
 }
 
 .lighting-gallery a {
   position: relative;
   display: grid;
-  min-height: 150px;
+  min-height: 118px;
   min-width: 0;
   align-content: space-between;
-  gap: 14px;
-  padding: 18px;
+  gap: 8px;
+  padding: 14px;
   border: 1px solid rgba(23, 32, 51, 0.08);
   border-radius: 8px;
   color: #172033;
@@ -1954,6 +2464,12 @@ dd {
   .photo-upload-panel,
   .detail-hero,
   .lighting-card,
+  .budget-hero,
+  .budget-value-grid,
+  .budget-plan-grid,
+  .budget-viewer-layout,
+  .inspection-hero,
+  .inspection-viewer-layout,
   .showroom-header,
   .showroom-layout {
     grid-template-columns: 1fr;
@@ -1983,21 +2499,56 @@ dd {
     max-height: none;
     overflow: visible;
   }
+
+  .budget-page-strip {
+    grid-auto-flow: column;
+    grid-auto-columns: 118px;
+    max-height: none;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0 0 4px;
+  }
+
+  .inspection-project-panel {
+    position: static;
+  }
 }
 
 @media (max-width: 720px) {
   .topbar {
     align-items: flex-start;
     flex-direction: column;
+    gap: 8px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  .brand {
+    font-size: 0.95rem;
+  }
+
+  .brand-avatar {
+    width: 38px;
+    height: 38px;
+  }
+
+  .brand-mark {
+    width: 86px;
+    height: 40px;
   }
 
   .nav-links {
     width: 100%;
+    flex-wrap: wrap;
+    gap: 6px;
   }
 
   .nav-links button {
     flex: 1;
+    min-width: 0;
+    padding: 7px 6px;
     background: #ffffff;
+    font-size: 0.92rem;
   }
 
   .hero {
@@ -2092,8 +2643,58 @@ dd {
   .stats-grid,
   .image-grid,
   .lighting-gallery,
+  .budget-value-grid,
+  .budget-plan-grid,
   .product-modal {
     grid-template-columns: 1fr;
+  }
+
+  .inspection-hero {
+    padding: 20px;
+  }
+
+  .inspection-note {
+    min-height: 150px;
+  }
+
+  .inspection-viewer-head {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .inspection-vr-frame {
+    height: 62vh;
+    min-height: 430px;
+  }
+
+  .inspection-project-panel {
+    padding: 14px;
+  }
+
+  .budget-sheet-preview {
+    overflow-x: auto;
+  }
+
+  .budget-sheet-head,
+  .budget-sheet-row {
+    min-width: 620px;
+  }
+
+  .budget-viewer {
+    padding: 14px;
+  }
+
+  .budget-viewer-head {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .budget-viewer-actions .secondary-action {
+    flex: 1;
+  }
+
+  .budget-page-image {
+    min-height: 280px;
   }
 
   .image-grid img,

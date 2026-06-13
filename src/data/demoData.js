@@ -144,6 +144,7 @@ const fixedCases = [
   },
 ];
 
+export const showroomCases = fixedCases;
 export const cases = [...fixedCases, ...jobsiteGeneratedCases];
 
 export const lightingSimulations = [
@@ -168,12 +169,12 @@ export const lightingSimulations = [
       },
       {
         src: jiangwanfuLightingBedroom,
-        label: '卧室灯光模拟',
+        label: '衣帽间灯光模拟',
         kujialeUrl: 'https://yun.kujiale.com/koolux/scenario?obsScenarioAtlasId=3FO4K4YLUWTG',
       },
       {
         src: jiangwanfuLightingHall,
-        label: '过道灯光模拟',
+        label: '主卧灯光模拟',
         kujialeUrl: 'https://yun.kujiale.com/koolux/scenario?obsScenarioAtlasId=3FO4K4YLU2Q7',
       },
       {
@@ -233,6 +234,62 @@ export const lightingSimulations = [
         kujialeUrl: 'https://yun.kujiale.com/koolux/scenario?obsScenarioAtlasId=3FO4K4YG74N0',
       },
     ],
+  },
+];
+
+const makeBudgetPlanPages = (planId, pageCount) =>
+  Array.from({ length: pageCount }, (_, index) => `/budget-plans/${planId}/page-${String(index + 1).padStart(2, '0')}.webp`);
+
+export const budgetPlans = [
+  {
+    id: '130sqm-smart-home',
+    name: '130 平米家智能方案',
+    homeType: '三室两厅',
+    focus: '全屋基础智能、灯光、窗帘、安防和常用生活场景',
+    pageLabel: '37 页在线预览',
+    thumbnail: '/budget-plans/130sqm-smart-home/page-01.webp',
+    pages: makeBudgetPlanPages('130sqm-smart-home', 37),
+    highlights: ['按空间列清设备', '把预算和功能对应起来', '适合标准户型沟通'],
+  },
+  {
+    id: '150sqm-smart-home',
+    name: '150 平米家智能方案',
+    homeType: '改善型住宅',
+    focus: '多房间灯光、窗帘、环境控制和回家离家场景',
+    pageLabel: '51 页在线预览',
+    thumbnail: '/budget-plans/150sqm-smart-home/page-01.webp',
+    pages: makeBudgetPlanPages('150sqm-smart-home', 51),
+    highlights: ['重点功能一眼看清', '适合客户快速比选', '方便后期增减项目'],
+  },
+  {
+    id: 'duplex-aqara',
+    name: '复式绿米智能方案',
+    homeType: '复式住宅',
+    focus: '上下层联动、分区控制、家人常用场景和设备清单',
+    pageLabel: '25 页在线预览',
+    thumbnail: '/budget-plans/duplex-aqara-smart/page-01.webp',
+    pages: makeBudgetPlanPages('duplex-aqara-smart', 25),
+    highlights: ['分楼层看配置', '减少大户型沟通遗漏', '设备和场景放在一起'],
+  },
+  {
+    id: 'four-floor-villa-mijia',
+    name: '四层别墅米家智能方案',
+    homeType: '四层别墅',
+    focus: '多楼层灯光、安防、窗帘、空调和生活模式',
+    pageLabel: '51 页在线预览',
+    thumbnail: '/budget-plans/four-floor-villa-mijia/page-01.webp',
+    pages: makeBudgetPlanPages('four-floor-villa-mijia', 51),
+    highlights: ['按楼层拆分预算', '适合复杂项目确认', '客户能理解每层用途'],
+  },
+  {
+    id: 'four-floor-villa-av',
+    name: '四层别墅背景音乐及影音方案',
+    homeType: '别墅影音',
+    focus: '背景音乐、影音娱乐、分区播放和设备搭配',
+    pageLabel: '15 页在线预览',
+    thumbnail: '/budget-plans/four-floor-villa-av/page-01.webp',
+    pages: makeBudgetPlanPages('four-floor-villa-av', 15),
+    highlights: ['影音系统单独说明', '设备搭配更直观', '适合高端空间深化'],
   },
 ];
 
