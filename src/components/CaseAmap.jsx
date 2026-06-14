@@ -84,16 +84,15 @@ export default function CaseAmap({ cases, activeId, onSelectCase }) {
       .then((AMap) => {
         if (isCancelled || !containerRef.current) return;
 
-        const usePageScrollOnMap = window.matchMedia('(max-width: 720px)').matches;
         const map = new AMap.Map(containerRef.current, {
           center: ZHENGZHOU_CENTER,
           zoom: 11,
           resizeEnable: true,
           viewMode: '2D',
-          dragEnable: !usePageScrollOnMap,
-          zoomEnable: !usePageScrollOnMap,
-          doubleClickZoom: !usePageScrollOnMap,
-          scrollWheel: !usePageScrollOnMap,
+          dragEnable: true,
+          zoomEnable: true,
+          doubleClickZoom: true,
+          scrollWheel: true,
         });
 
         const markers = new Map();

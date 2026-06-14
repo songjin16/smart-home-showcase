@@ -1130,6 +1130,7 @@ h2 {
 .amap-container {
   width: 100%;
   height: 620px;
+  touch-action: none;
 }
 
 .amap-loading,
@@ -2598,11 +2599,11 @@ dd {
 
   .amap-container {
     height: 360px;
-    touch-action: pan-y !important;
+    touch-action: none !important;
   }
 
   .amap-container canvas {
-    touch-action: pan-y !important;
+    touch-action: none !important;
   }
 
   .amap-case-marker {
