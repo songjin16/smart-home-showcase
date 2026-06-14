@@ -991,12 +991,13 @@ function CaseMapPage({ fixedCaseTools, navigate }) {
   const { photos, addPhoto, updateCase } = useUploadedPhotos();
   const allCases = useMemo(() => buildCasesWithPhotos(fixedCaseTools.fixedCases, photos), [fixedCaseTools.fixedCases, photos]);
   const [activeId, setActiveId] = useState(allCases[0].id);
-  const [previewPhoto, setPreviewPhoto] = useState(null);
+  const [previewGallery, setPreviewGallery] = useState(null);
   const [editDraft, setEditDraft] = useState(null);
   const [caseSearch, setCaseSearch] = useState('');
   const [serviceArea, setServiceArea] = useState(ALL_SERVICE_AREAS);
   const [mapPhotoCaseId, setMapPhotoCaseId] = useState(null);
   const [mapPhotoId, setMapPhotoId] = useState(null);
+  const previewTouchStartX = useRef(null);
   const activeCase = allCases.find((item) => item.id === activeId) ?? allCases[0];
   const normalizedCaseSearch = caseSearch.trim().toLowerCase();
   const serviceAreas = useMemo(() => {
@@ -1030,6 +1031,28 @@ function CaseMapPage({ fixedCaseTools, navigate }) {
   }, [activeCase, filteredCases, normalizedCaseSearch]);
   const mapPhotoCase = allCases.find((item) => item.id === mapPhotoCaseId && item.photos?.length) ?? null;
   const mapSelectedPhoto = mapPhotoCase?.photos.find((photo) => photo.id === mapPhotoId) ?? mapPhotoCase?.photos[0] ?? null;
+  const previewPhotos = previewGallery?.photos ?? [];
+  const previewPhoto = previewPhotos[previewGallery?.index ?? 0] ?? null;
+  const hasPreviewNavigation = previewPhotos.length > 1;
+
+  const openPhotoPreview = useCallback((photo, photoList) => {
+    const safePhotoList = photoList?.length ? photoList : [photo];
+    const nextIndex = Math.max(0, safePhotoList.findIndex((item) => item.id === photo.id));
+    setPreviewGallery({ photos: safePhotoList, index: nextIndex });
+  }, []);
+
+  const closePhotoPreview = useCallback(() => {
+    setPreviewGallery(null);
+    previewTouchStartX.current = null;
+  }, []);
+
+  const showPreviewPhoto = useCallback((direction) => {
+    setPreviewGallery((current) => {
+      if (!current?.photos?.length) return current;
+      const nextIndex = (current.index + direction + current.photos.length) % current.photos.length;
+      return { ...current, index: nextIndex };
+    });
+  }, []);
 
   const handleMapSelectCase = useCallback((caseId) => {
     const nextCase = allCases.find((item) => item.id === caseId);
@@ -1080,6 +1103,27 @@ function CaseMapPage({ fixedCaseTools, navigate }) {
     }
   }, [activeId, allCases]);
 
+  useEffect(() => {
+    if (!previewPhoto) return undefined;
+
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        closePhotoPreview();
+        return;
+      }
+      if (event.key === 'ArrowLeft') {
+        showPreviewPhoto(-1);
+        return;
+      }
+      if (event.key === 'ArrowRight') {
+        showPreviewPhoto(1);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [closePhotoPreview, previewPhoto, showPreviewPhoto]);
+
   return (
     <main className="page">
       <div className="page-heading">
@@ -1103,7 +1147,7 @@ function CaseMapPage({ fixedCaseTools, navigate }) {
                   <X size={18} />
                 </button>
               </div>
-              <button className="map-photo-main" type="button" onClick={() => setPreviewPhoto(mapSelectedPhoto)}>
+              <button className="map-photo-main" type="button" onClick={() => openPhotoPreview(mapSelectedPhoto, mapPhotoCase.photos)}>
                 <img src={mapSelectedPhoto.imageUrl} alt={`${mapPhotoCase.name}现场大图`} />
               </button>
               <div className="map-photo-strip" aria-label="切换现场照片">
@@ -1118,7 +1162,7 @@ function CaseMapPage({ fixedCaseTools, navigate }) {
                   </button>
                 ))}
                 {mapPhotoCase.photos.length > 18 ? (
-                  <button className="map-photo-more" type="button" onClick={() => setPreviewPhoto(mapSelectedPhoto)}>
+                  <button className="map-photo-more" type="button" onClick={() => openPhotoPreview(mapSelectedPhoto, mapPhotoCase.photos)}>
                     +{mapPhotoCase.photos.length - 18}
                   </button>
                 ) : null}
@@ -1247,7 +1291,7 @@ function CaseMapPage({ fixedCaseTools, navigate }) {
               {activeCase.photos?.length ? (
                 <div className="photo-gallery">
                   {activeCase.photos.map((photo) => (
-                    <button key={photo.id} className="photo-thumb" type="button" onClick={() => setPreviewPhoto(photo)}>
+                    <button key={photo.id} className="photo-thumb" type="button" onClick={() => openPhotoPreview(photo, activeCase.photos)}>
                       <img src={photo.imageUrl} alt={`${activeCase.name}上传照片`} />
                     </button>
                   ))}
@@ -1285,15 +1329,45 @@ function CaseMapPage({ fixedCaseTools, navigate }) {
       <FixedCaseMaintenance caseItem={activeCase.isUploaded ? null : activeCase} fixedCaseTools={fixedCaseTools} />
 
       {previewPhoto ? (
-        <div className="photo-preview-backdrop" onClick={() => setPreviewPhoto(null)}>
-          <article className="photo-preview" onClick={(event) => event.stopPropagation()}>
-            <button className="photo-preview-close" type="button" onClick={() => setPreviewPhoto(null)} aria-label="关闭图片预览">
+        <div className="photo-preview-backdrop" onClick={closePhotoPreview}>
+          <article
+            className="photo-preview"
+            onClick={(event) => event.stopPropagation()}
+            onTouchStart={(event) => {
+              previewTouchStartX.current = event.touches[0]?.clientX ?? null;
+            }}
+            onTouchEnd={(event) => {
+              const startX = previewTouchStartX.current;
+              previewTouchStartX.current = null;
+              if (startX === null || !hasPreviewNavigation) return;
+
+              const deltaX = event.changedTouches[0]?.clientX - startX;
+              if (Math.abs(deltaX) < 48) return;
+              showPreviewPhoto(deltaX > 0 ? -1 : 1);
+            }}
+          >
+            <button className="photo-preview-close" type="button" onClick={closePhotoPreview} aria-label="关闭图片预览">
               <X size={20} />
             </button>
-            <img src={previewPhoto.imageUrl} alt={`${previewPhoto.name}项目照片大图`} />
-            <div>
-              <h2>{previewPhoto.name}</h2>
-              <p>{previewPhoto.city}</p>
+            {hasPreviewNavigation ? (
+              <button className="photo-preview-nav previous" type="button" onClick={() => showPreviewPhoto(-1)} aria-label="上一张现场照片">
+                <ArrowLeft size={22} />
+              </button>
+            ) : null}
+            <img className="photo-preview-image" src={previewPhoto.imageUrl} alt={`${previewPhoto.name}项目照片大图`} />
+            {hasPreviewNavigation ? (
+              <button className="photo-preview-nav next" type="button" onClick={() => showPreviewPhoto(1)} aria-label="下一张现场照片">
+                <ArrowRight size={22} />
+              </button>
+            ) : null}
+            <div className="photo-preview-caption">
+              <div>
+                <h2>{previewPhoto.name}</h2>
+                <p>{previewPhoto.city}</p>
+              </div>
+              {hasPreviewNavigation ? (
+                <span>{(previewGallery?.index ?? 0) + 1} / {previewPhotos.length}</span>
+              ) : null}
             </div>
           </article>
         </div>

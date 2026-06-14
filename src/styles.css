@@ -1739,41 +1739,74 @@ h2 {
   border-radius: 8px;
   background: #ffffff;
   box-shadow: 0 28px 80px rgba(11, 18, 32, 0.38);
+  touch-action: pan-y;
 }
 
-.photo-preview img {
+.photo-preview-image {
   width: 100%;
-  max-height: 78vh;
+  max-height: min(72vh, 680px);
   object-fit: contain;
   background: #101827;
 }
 
-.photo-preview div {
+.photo-preview-caption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
   padding: 0 18px 18px;
 }
 
-.photo-preview h2 {
-  font-size: 1.2rem;
+.photo-preview-caption h2 {
+  margin: 0 0 4px;
+  font-size: 1rem;
 }
 
-.photo-preview p {
-  margin-top: 4px;
+.photo-preview-caption p {
+  margin: 0;
   color: #5b6778;
 }
 
-.photo-preview-close {
+.photo-preview-caption span {
+  flex: 0 0 auto;
+  color: #5b6778;
+  font-weight: 800;
+}
+
+.photo-preview-close,
+.photo-preview-nav {
   position: absolute;
-  top: 12px;
-  right: 12px;
+  z-index: 2;
   display: grid;
-  width: 40px;
-  height: 40px;
   place-items: center;
-  border: 1px solid rgba(255, 255, 255, 0.28);
-  border-radius: 999px;
-  color: #ffffff;
-  background: rgba(11, 18, 32, 0.68);
+  border: 0;
+  border-radius: 8px;
+  color: #172033;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 12px 30px rgba(11, 18, 32, 0.22);
   cursor: pointer;
+}
+
+.photo-preview-close {
+  top: 14px;
+  right: 14px;
+  width: 38px;
+  height: 38px;
+}
+
+.photo-preview-nav {
+  top: 50%;
+  width: 42px;
+  height: 54px;
+  transform: translateY(-50%);
+}
+
+.photo-preview-nav.previous {
+  left: 14px;
+}
+
+.photo-preview-nav.next {
+  right: 14px;
 }
 
 .case-city {
@@ -2670,6 +2703,39 @@ dd {
 
   .inspection-project-panel {
     padding: 14px;
+  }
+
+  .photo-preview-backdrop {
+    padding: 10px;
+  }
+
+  .photo-preview {
+    width: 100%;
+    max-height: 94vh;
+  }
+
+  .photo-preview-image {
+    max-height: 72vh;
+  }
+
+  .photo-preview-nav {
+    width: 38px;
+    height: 50px;
+  }
+
+  .photo-preview-nav.previous {
+    left: 8px;
+  }
+
+  .photo-preview-nav.next {
+    right: 8px;
+  }
+
+  .photo-preview-caption {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
+    padding: 0 14px 14px;
   }
 
   .budget-sheet-preview {
