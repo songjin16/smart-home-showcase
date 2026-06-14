@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.env.local
+.DS_Store
+photo-review/
+public/jobsite-photos/images/
+public/jobsite-photos/*.html
+public/jobsite-photos/*.json
+public/jobsite-photos/*.md

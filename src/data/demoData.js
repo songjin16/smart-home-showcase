@@ -145,7 +145,22 @@ const fixedCases = [
 ];
 
 export const showroomCases = fixedCases;
-export const cases = [...fixedCases, ...jobsiteGeneratedCases];
+
+function useJobsiteThumbsForStaticHosting(caseItem) {
+  const photos = caseItem.photos?.map((photo) => ({
+    ...photo,
+    imageUrl: photo.thumbUrl ?? photo.imageUrl,
+  })) ?? [];
+
+  return {
+    ...caseItem,
+    cover: caseItem.photos?.[0]?.thumbUrl ?? caseItem.cover,
+    images: caseItem.images.map((image) => image.replace('/jobsite-photos/images/', '/jobsite-photos/thumbs/')),
+    photos,
+  };
+}
+
+export const cases = [...fixedCases, ...jobsiteGeneratedCases.map(useJobsiteThumbsForStaticHosting)];
 
 export const lightingSimulations = [
   {

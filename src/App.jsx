@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   ArrowLeft,
   ArrowRight,
@@ -24,10 +24,11 @@ import {
 } from 'lucide-react';
 import * as THREE from 'three';
 import { budgetPlans, cases, lightingSimulations, productPoints, scenes, showroomCases } from './data/demoData.js';
-import CaseAmap from './components/CaseAmap.jsx';
-import PhotoUploadPanel from './components/PhotoUploadPanel.jsx';
 import zhizhuangxiaAvatar from './assets/zhizhuangxia-avatar.png';
 import zhizhuangxiaLogo from './assets/zhizhuangxia-logo.png';
+
+const CaseAmap = lazy(() => import('./components/CaseAmap.jsx'));
+const PhotoUploadPanel = lazy(() => import('./components/PhotoUploadPanel.jsx'));
 
 const UPLOADED_PHOTOS_KEY = 'zhizhuangxia_uploaded_photos';
 const UPLOADED_CASE_INTRO = '由上传的水印照片自动生成，可点击查看这个小区关联的现场图片。';
@@ -1088,7 +1089,9 @@ function CaseMapPage({ fixedCaseTools, navigate }) {
 
       <section className="case-map-layout">
         <div className="case-map-stage">
-          <CaseAmap cases={allCases} activeId={activeId} onSelectCase={handleMapSelectCase} />
+          <Suspense fallback={<div className="amap-state"><h2>服务地图加载中...</h2></div>}>
+            <CaseAmap cases={allCases} activeId={activeId} onSelectCase={handleMapSelectCase} />
+          </Suspense>
           {mapPhotoCase && mapSelectedPhoto ? (
             <aside className="map-photo-panel" aria-label={`${mapPhotoCase.name}现场照片`}>
               <div className="map-photo-panel-head">
@@ -1176,13 +1179,13 @@ function CaseMapPage({ fixedCaseTools, navigate }) {
               <p className="case-city">{activeCase.city}</p>
               <h2>{activeCase.name}</h2>
               <p>{activeCase.intro}</p>
-              {activeCase.isUploaded && !editDraft ? (
+              {IS_LOCAL_EDITING_ENABLED && activeCase.isUploaded && !editDraft ? (
                 <button className="case-edit-trigger" type="button" onClick={openCaseEditor}>
                   <PencilLine size={16} />
                   修改名称和文字
                 </button>
               ) : null}
-              {activeCase.isUploaded && editDraft ? (
+              {IS_LOCAL_EDITING_ENABLED && activeCase.isUploaded && editDraft ? (
                 <div className="case-edit-form">
                   <label>
                     小区名称
@@ -1273,7 +1276,11 @@ function CaseMapPage({ fixedCaseTools, navigate }) {
         </aside>
       </section>
 
-      <PhotoUploadPanel cases={allCases} uploadCount={photos.length} onSave={handleSavePhoto} />
+      {IS_LOCAL_EDITING_ENABLED ? (
+        <Suspense fallback={<section className="photo-upload-panel"><p>项目照片维护工具加载中...</p></section>}>
+          <PhotoUploadPanel cases={allCases} uploadCount={photos.length} onSave={handleSavePhoto} />
+        </Suspense>
+      ) : null}
 
       <FixedCaseMaintenance caseItem={activeCase.isUploaded ? null : activeCase} fixedCaseTools={fixedCaseTools} />
 
